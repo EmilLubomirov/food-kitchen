@@ -1,16 +1,21 @@
 import React from "react";
 import {Link} from "react-router-dom";
+import styled from 'styled-components';
 
-const Index = ({path, title, children}) =>{
+export const StyledLink = styled(Link)`
+    text-decoration: none;
+`;
+
+const LinkComponent = ({path, title, children}) =>{
 
     return (
         <div data-test-id={`link-${title}`}>
-            <Link to={path}>
+            <StyledLink to={path}>
                 {children}
                 {title}
-            </Link>
+            </StyledLink>
         </div>
     )
 };
 
-export default Index;
+export default LinkComponent;

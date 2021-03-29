@@ -7,6 +7,7 @@ import {BrowserRouter} from "react-router-dom";
 import Navigation from "./navigation";
 
 ReactDOM.render(
+
   <React.StrictMode>
     <App>
         <BrowserRouter>

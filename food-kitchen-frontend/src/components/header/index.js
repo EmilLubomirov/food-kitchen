@@ -1,15 +1,26 @@
 import React from "react"
 import getNavigation from "../../utils/navigation";
-import LinkComponent from "../../components/link";
-import {Button} from "primereact/button";
+import LinkComponent, {StyledLink} from "../../components/link";
+import styled from 'styled-components';
+
+const Wrapper = styled.div`
+    height: 70px;
+    background-color: lightgray;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    
+    & ${StyledLink} {
+        font-weight: bolder;
+    }
+`;
 
 const Header = () => {
 
     const navigation = getNavigation();
 
     return (
-        <div>
-            <Button label="Warning" className="p-button-warning" iconPos="right"/>
+        <Wrapper>
             {  navigation.map((link, index) => {
                 return <LinkComponent key={index}
                                       path={link.path}
@@ -17,7 +28,7 @@ const Header = () => {
 
             })
             }
-        </div>
+        </Wrapper>
     )
 };
 

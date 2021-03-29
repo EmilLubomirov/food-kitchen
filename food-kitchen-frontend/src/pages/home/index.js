@@ -1,13 +1,13 @@
 import React from "react";
-import Header from "../../components/header";
+import PageLayout from "../../components/page-layout";
+import Gallery from "../../components/gallery";
 
 const HomePage = () => {
 
     return (
-        <>
-            <Header/>
-            <h1>Hello from home!</h1>
-        </>
+        <PageLayout>
+            <Gallery/>
+        </PageLayout>
     )
 };
 
