@@ -7,11 +7,15 @@ const getNavigation = () => {
         },
         {
             title: 'Recipes',
-            path: '/recipes'
+            path: '/recipe'
         },
         {
             title: 'Books',
-            path: '/books'
+            path: '/book'
+        },
+        {
+          title: 'Add Recipe',
+          path: '/recipe/add'
         },
         {
             title: 'Login',

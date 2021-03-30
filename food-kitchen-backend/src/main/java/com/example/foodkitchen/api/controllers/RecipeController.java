@@ -2,9 +2,8 @@ package com.example.foodkitchen.api.controllers;
 
 import com.example.foodkitchen.data.entities.Recipe;
 import com.example.foodkitchen.data.services.RecipeService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,5 +20,11 @@ public class RecipeController {
     @GetMapping
     public List<Recipe> findAll(){
         return recipeService.findAll();
+    }
+
+    @PostMapping
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public Recipe add(@RequestBody Recipe recipe){
+        return recipeService.add(recipe);
     }
 }

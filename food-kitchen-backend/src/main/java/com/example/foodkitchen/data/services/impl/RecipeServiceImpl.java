@@ -20,4 +20,9 @@ public class RecipeServiceImpl implements RecipeService {
     public List<Recipe> findAll() {
         return recipeRepository.findAll();
     }
+
+    @Override
+    public Recipe add(Recipe recipe) {
+        return recipeRepository.saveAndFlush(recipe);
+    }
 }
