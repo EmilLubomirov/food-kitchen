@@ -23,7 +23,7 @@ const AddRecipePage = () => {
 
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [imageUrl, setImageUrl] = useState('');
+    const [imagesUrl, setImagesUrl] = useState([]);
 
     const handleSubmit = () => {
 
@@ -33,7 +33,7 @@ const AddRecipePage = () => {
         const body = {
             title,
             description,
-            imageUrl
+            imagesUrl
         };
 
         axios.post(url, body, { headers })
@@ -57,7 +57,7 @@ const AddRecipePage = () => {
             if (!error) {
 
                 if(photos.event === "success"){
-                    setImageUrl(photos.info.secure_url);
+                    setImagesUrl(imagesUrl => [...imagesUrl, photos.info.secure_url]);
                 }
             } else {
                 console.log(error);

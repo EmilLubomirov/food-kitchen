@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import PageLayout from "../../components/page-layout";
 import axios from "axios";
+import RecipeCards from "../../components/recipe-cards";
 
 const RecipePage = () => {
 
@@ -19,11 +20,7 @@ const RecipePage = () => {
     return (
         <PageLayout>
             <h1>Recipe page</h1>
-            {
-                recipes.length === 0 ? "No recipes found" : recipes.map(r => {
-                    return r.title;
-                })
-            }
+            <RecipeCards recipes={recipes}/>
         </PageLayout>
     )
 };
