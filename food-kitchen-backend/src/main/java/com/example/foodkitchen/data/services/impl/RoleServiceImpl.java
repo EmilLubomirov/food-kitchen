@@ -23,17 +23,17 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public Set<RoleServiceModel> findPlainUserRoles() {
 
-        RoleServiceModel userRole =  modelMapper.map(roleRepository.findByAuthority("USER"), RoleServiceModel.class);
+        RoleServiceModel userRole = modelMapper.map(roleRepository.findByAuthority("USER"), RoleServiceModel.class);
         return Set.of(userRole);
     }
 
     @Override
     public Set<RoleServiceModel> findAdminUserRoles() {
 
-        Set<RoleServiceModel> roles = findPlainUserRoles();
-        roles.add(modelMapper.map(roleRepository.findByAuthority("ADMIN"), RoleServiceModel.class));
+        RoleServiceModel userRole = modelMapper.map(roleRepository.findByAuthority("USER"), RoleServiceModel.class);
+        RoleServiceModel adminRole = modelMapper.map(roleRepository.findByAuthority("ADMIN"), RoleServiceModel.class);
 
-        return roles;
+        return Set.of(userRole, adminRole);
     }
 
     @Override

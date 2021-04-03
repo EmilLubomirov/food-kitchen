@@ -7,6 +7,8 @@ import com.example.foodkitchen.data.repositories.UserRepository;
 import com.example.foodkitchen.data.services.RoleService;
 import com.example.foodkitchen.data.services.UserService;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -62,5 +64,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean existsByUsername(String username) {
         return userRepository.existsByUsername(username);
+    }
+
+    @Override
+    public UserServiceModel findByUsername(String username) {
+        return modelMapper.map(userRepository.findByUsername(username), UserServiceModel.class);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByUsername(username);
     }
 }
