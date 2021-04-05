@@ -9,4 +9,6 @@ public interface RecipeService {
     List<Recipe> findAll();
 
     Recipe add(Recipe recipe);
+
+    Recipe findById(String id);
 }

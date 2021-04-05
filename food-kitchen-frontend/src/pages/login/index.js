@@ -65,7 +65,7 @@ const LoginPage = () => {
                 </span>
 
                 <span className="p-float-label">
-                    <Password value={password} onChange={(e) => setPassword(e.target.value)} toggleMask />
+                    <Password value={password} onChange={(e) => setPassword(e.target.value)} toggleMask  feedback={false} />
                     <label htmlFor="password">Password</label>
                 </span>
 

@@ -1,6 +1,6 @@
-const getNavigation = () => {
+const getNavigation = (user) => {
 
-    const links = [
+    const commonLinks = [
         {
             title: 'Home',
             path: '/'
@@ -13,10 +13,10 @@ const getNavigation = () => {
             title: 'Books',
             path: '/book'
         },
-        {
-          title: 'Add Recipe',
-          path: '/recipe/add'
-        },
+    ];
+
+    const guestLinks = [
+        ...commonLinks,
         {
             title: 'Login',
             path: '/login'
@@ -27,7 +27,19 @@ const getNavigation = () => {
         }
     ];
 
-    return links;
+    const userLinks = [
+        ...commonLinks,
+        {
+            title: 'Add Recipe',
+            path: '/recipe/add'
+        }
+    ];
+
+    if (!user){
+        return guestLinks;
+    }
+
+    return userLinks;
 };
 
 export default getNavigation;

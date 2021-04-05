@@ -64,6 +64,11 @@ public class JwtProvider {
     }
 
     public Object getUserDetails(String token){
+
+        if (token.isEmpty()){
+            return null;
+        }
+
         return Jwts.parser()
                 .setSigningKey(jwtSecret)
                 .parseClaimsJws(token)

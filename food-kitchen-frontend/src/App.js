@@ -31,6 +31,17 @@ const App = (props) => {
     const checkUserStatus = useCallback(async () =>{
         const user = await getLoggedInUser();
 
+        if (!user){
+
+            setState({
+                ...state,
+                user: false,
+                isLoading: false
+            });
+
+            return;
+        }
+
         const {id, username, authorities} = user;
         const isAdmin = authorities.some(auth => auth['authority'] === 'ADMIN');
 

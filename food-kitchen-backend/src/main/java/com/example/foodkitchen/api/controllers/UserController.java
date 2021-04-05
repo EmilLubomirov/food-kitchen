@@ -7,7 +7,6 @@ import com.example.foodkitchen.data.models.binding.user.UserRegisterModel;
 import com.example.foodkitchen.data.models.service.UserServiceModel;
 import com.example.foodkitchen.data.services.UserService;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

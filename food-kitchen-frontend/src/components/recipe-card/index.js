@@ -4,15 +4,17 @@ import LinkComponent from "../link";
 
 const RecipeCard = ({recipe}) => {
 
+    const {title, imageUrl, id}= recipe;
+
     const header = (
-        <img alt={recipe.title} src={recipe.imageUrl}
+        <img alt={title} src={imageUrl}
              onError={(e) => e.target.src='https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} />
     );
 
     return (
 
-        <LinkComponent path={`recipe/${recipe.id}`}>
-            <Card title={recipe.title} style={{ width: '16em', height: '18em'}} header={header}>
+        <LinkComponent path={`recipe/${id}`}>
+            <Card title={title} style={{ width: '16em', height: '18em'}} header={header}>
                 {/*<p className="p-m-0" style={{lineHeight: '1.5'}}>{recipe.title}</p>*/}
             </Card>
         </LinkComponent>
