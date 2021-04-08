@@ -1,14 +1,15 @@
 package com.example.foodkitchen.data.services;
 
 import com.example.foodkitchen.data.entities.Recipe;
+import com.example.foodkitchen.data.models.service.RecipeServiceModel;
 
 import java.util.List;
 
 public interface RecipeService {
 
-    List<Recipe> findAll();
+    List<RecipeServiceModel> findAll();
 
-    Recipe add(Recipe recipe);
+    Recipe add(Recipe recipe, String userId);
 
-    Recipe findById(String id);
+    RecipeServiceModel findById(String id);
 }

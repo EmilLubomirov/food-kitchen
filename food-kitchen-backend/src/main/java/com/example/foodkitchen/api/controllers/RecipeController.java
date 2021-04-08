@@ -1,10 +1,18 @@
 package com.example.foodkitchen.api.controllers;
 
 import com.example.foodkitchen.data.entities.Recipe;
+import com.example.foodkitchen.data.entities.User;
+import com.example.foodkitchen.data.models.service.RecipeServiceModel;
 import com.example.foodkitchen.data.services.RecipeService;
+import com.sun.security.auth.UserPrincipal;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -18,18 +26,18 @@ public class RecipeController {
     }
 
     @GetMapping
-    public List<Recipe> findAll(){
+    public List<RecipeServiceModel> findAll(){
         return recipeService.findAll();
     }
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public Recipe add(@RequestBody Recipe recipe){
-        return recipeService.add(recipe);
+    public Recipe add(@RequestBody Recipe recipe, @AuthenticationPrincipal User principal){
+        return recipeService.add(recipe, principal.getUsername());
     }
 
     @GetMapping("/{id}")
-    public Recipe findById(@PathVariable String id){
+    public RecipeServiceModel findById(@PathVariable String id){
         return recipeService.findById(id);
     }
 }

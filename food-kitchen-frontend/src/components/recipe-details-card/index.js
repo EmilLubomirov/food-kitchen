@@ -10,7 +10,7 @@ const Wrapper = styled.div`
 
 const RecipeDetailsCard = ({recipe}) => {
 
-    const {title, imageUrl, description} = recipe;
+    const {title, imageUrl, description, publisher} = recipe;
 
     const header = (
         <img src={imageUrl} alt={title} onError={(e) => e.target.src='https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} />
@@ -20,6 +20,7 @@ const RecipeDetailsCard = ({recipe}) => {
         <Wrapper>
             <Card title={title} subTitle="Subtitle" style={{ width: '25em' }} header={header}>
                 <p className="p-m-0" style={{lineHeight: '1.5'}}>{description}</p>
+                <p className="p-m-0" style={{lineHeight: '1.5'}}>Published by: {publisher}</p>
             </Card>
         </Wrapper>
     )

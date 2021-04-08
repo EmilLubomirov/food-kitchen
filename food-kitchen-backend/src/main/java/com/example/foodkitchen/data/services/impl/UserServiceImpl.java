@@ -1,5 +1,6 @@
 package com.example.foodkitchen.data.services.impl;
 
+import com.example.foodkitchen.data.entities.Recipe;
 import com.example.foodkitchen.data.entities.Role;
 import com.example.foodkitchen.data.entities.User;
 import com.example.foodkitchen.data.models.service.UserServiceModel;
@@ -12,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -59,6 +61,22 @@ public class UserServiceImpl implements UserService {
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return modelMapper.map(userRepository.saveAndFlush(user), UserServiceModel.class);
+    }
+
+    @Override
+    public UserServiceModel addRecipe(String userUsername, Recipe recipe) {
+
+        User user = userRepository.findByUsername(userUsername);
+
+        if (user.getRecipes() == null){
+            user.setRecipes(new HashSet<>(Set.of(recipe)));
+        }
+
+        else {
+            user.getRecipes().add(recipe);
+        }
+
+        return modelMapper.map(userRepository.save(user), UserServiceModel.class);
     }
 
     @Override

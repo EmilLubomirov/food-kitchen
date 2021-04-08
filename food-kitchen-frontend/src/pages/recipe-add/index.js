@@ -8,6 +8,7 @@ import {InputTextarea} from "primereact/inputtextarea";
 import {Button} from "primereact/button";
 import axios from "axios";
 import styled from "styled-components";
+import {getCookie} from "../../utils/cookie";
 
 const Wrapper = styled.div`
     height: 500px;
@@ -23,17 +24,18 @@ const AddRecipePage = () => {
 
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [imagesUrl, setImagesUrl] = useState([]);
+    const [imageUrl, setImageUrl] = useState(null);
 
     const handleSubmit = () => {
 
         const url = 'http://localhost:8080/api/recipe';
-        const headers =  { 'Content-Type': 'application/json' };
+        const headers =  { 'Content-Type': 'application/json',
+                            'Authorization': getCookie(process.env.REACT_APP_AUTH_COOKIE_NAME) };
 
         const body = {
             title,
             description,
-            imagesUrl
+            imageUrl,
         };
 
         axios.post(url, body, { headers })
@@ -57,7 +59,8 @@ const AddRecipePage = () => {
             if (!error) {
 
                 if(photos.event === "success"){
-                    setImagesUrl(imagesUrl => [...imagesUrl, photos.info.secure_url]);
+                    // setImagesUrl(imagesUrl => [...imagesUrl, photos.info.secure_url]);
+                    setImageUrl(photos.info.secure_url);
                 }
             } else {
                 console.log(error);

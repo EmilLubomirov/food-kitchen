@@ -2,6 +2,7 @@ package com.example.foodkitchen.data.entities;
 
 import com.example.foodkitchen.data.entities.base.BaseEntity;
 import com.example.foodkitchen.data.entities.base.BaseInfoEntity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,7 @@ public class Recipe extends BaseInfoEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JsonBackReference
     private User user;
 
     @ManyToMany(fetch = FetchType.EAGER)
