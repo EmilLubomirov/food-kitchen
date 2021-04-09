@@ -42,12 +42,12 @@ const App = (props) => {
             return;
         }
 
-        const {id, username, authorities} = user;
+        const {id, username, avatarImageUrl, authorities} = user;
         const isAdmin = authorities.some(auth => auth['authority'] === 'ADMIN');
 
         setState({
             ...state,
-            user: { id, username, isAdmin },
+            user: { id, username, avatarImageUrl, isAdmin },
             isLoading: false
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -7,6 +7,7 @@ import RegisterPage from "./pages/register";
 import LoginPage from "./pages/login";
 import AuthContext from "./AuthContext";
 import RecipeDetailsPage from "./pages/recipe-details";
+import ProfilePage from "./pages/profile";
 
 const Navigation = () => {
 
@@ -30,6 +31,10 @@ const Navigation = () => {
 
             <Route path='/login'>
                 {!isLoggedIn ? (<LoginPage/>) : (<Redirect to="/"/>)}
+            </Route>
+
+            <Route path='/profile'>
+                {isLoggedIn ? (<ProfilePage/>) : (<Redirect to="/"/>)}
             </Route>
         </Switch>
     )

@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -64,11 +65,38 @@ public class UserController {
         return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getId(),
                 userDetails.getUsername(),
-                userDetails.getAuthorities()));
+                userDetails.getAuthorities(),
+                userDetails.getAvatarImageUrl()));
     }
 
     @PostMapping("/verifyLogin")
     public Object verifyLogin(@RequestHeader String authorization){
+
+        Object userDetails = jwtProvider.getUserDetails(authorization);
         return jwtProvider.getUserDetails(authorization);
+    }
+
+    @PatchMapping("/edit/username")
+    public ResponseEntity<?> updateUsername(@RequestParam String updateUsername,
+                                    @AuthenticationPrincipal User principal){
+
+        UserServiceModel userServiceModel = userService.editUserUsername(principal.getUsername(), updateUsername);
+        return ResponseEntity.ok().body(userServiceModel);
+    }
+
+    @PatchMapping("/edit/password")
+    public ResponseEntity<?> updatePassword(@RequestParam String updatePassword,
+                                    @AuthenticationPrincipal User principal) {
+
+        UserServiceModel userServiceModel = userService.editUserPassword(principal.getUsername(), updatePassword);
+        return ResponseEntity.ok().body(userServiceModel);
+    }
+
+    @PatchMapping("/edit/profilePicture")
+    public ResponseEntity<?> updateProfilePicture(@RequestParam String updateAvatarImageUrl,
+                                            @AuthenticationPrincipal User principal) {
+
+        UserServiceModel userServiceModel = userService.editUserProfilePicture(principal.getUsername(), updateAvatarImageUrl);
+        return ResponseEntity.ok().body(userServiceModel);
     }
 }

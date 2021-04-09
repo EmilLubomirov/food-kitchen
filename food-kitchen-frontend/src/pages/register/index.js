@@ -6,6 +6,8 @@ import {Button} from "primereact/button";
 import styled from "styled-components";
 import axios from "axios";
 import {Password} from "primereact/password";
+import {beginUpload} from "../../utils/cloudinaryService";
+import {CloudinaryContext} from "cloudinary-react";
 
 const Wrapper = styled.div`
     height: 400px;
@@ -20,6 +22,7 @@ const RegisterPage = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [avatarImageUrl, setAvatarImageUrl] = useState(null);
 
     const history = useHistory();
 
@@ -37,7 +40,8 @@ const RegisterPage = () => {
         const body = {
             username,
             password,
-            confirmPassword
+            confirmPassword,
+            avatarImageUrl
         };
 
         const headers = {'Content-Type': 'application/json'};
@@ -53,25 +57,28 @@ const RegisterPage = () => {
 
     return (
         <PageLayout>
-            <Wrapper className="card">
-                <h1>Register</h1>
-                <span className="p-float-label">
+            <CloudinaryContext cloudName={process.env.REACT_APP_CLOUD_NAME}>
+                <Wrapper className="card">
+                    <h1>Register</h1>
+                    <span className="p-float-label">
                     <InputText id="username" value={username} onChange={(e) => setUsername(e.target.value)} />
                     <label htmlFor="username">Username</label>
                 </span>
 
-                <span className="p-float-label">
+                    <span className="p-float-label">
                     <Password value={password} onChange={(e) => setPassword(e.target.value)} toggleMask />
                     <label htmlFor="password">Password</label>
                 </span>
 
-                <span className="p-float-label">
+                    <span className="p-float-label">
                     <Password value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} toggleMask />
                     <label htmlFor="confirmPassword">Confirm Password</label>
                 </span>
 
-                <Button onClick={handleSubmit} label="Register"/>
-            </Wrapper>
+                    <Button onClick={() => beginUpload(setAvatarImageUrl)} label={"Add profile picture"}/>
+                    <Button onClick={handleSubmit} label="Register"/>
+                </Wrapper>
+            </CloudinaryContext>
         </PageLayout>
     )
 };

@@ -40,13 +40,14 @@ const LoginPage = () => {
 
         authenticate(url, body, headers, async (response) =>{
 
-            const {id, username, authorities} = response.data;
+            const {id, username, avatarImageUrl, authorities} = response.data;
             const isAdmin = authorities.some(auth => auth['authority'] === 'ADMIN');
 
             context.login({
                 id,
                 username,
-                isAdmin
+                isAdmin,
+                avatarImageUrl,
             });
 
             history.push('/recipe');

@@ -90,6 +90,48 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserServiceModel editUser(String oldUsername,
+                                     String updateUsername,
+                                     String principalPass,
+                                     String oldPass, String updatePass) {
+
+        boolean matches = passwordEncoder.matches(oldPass, principalPass);
+
+        User user = userRepository.findByUsername(oldUsername);
+
+        if (matches){
+            user.setUsername(updateUsername);
+            user.setPassword(passwordEncoder.encode(updatePass));
+        }
+
+        return modelMapper.map(userRepository.saveAndFlush(user), UserServiceModel.class);
+    }
+
+    @Override
+    public UserServiceModel editUserUsername(String oldUsername, String updateUsername) {
+
+        User user = userRepository.findByUsername(oldUsername);
+        user.setUsername(updateUsername);
+        return modelMapper.map(userRepository.saveAndFlush(user), UserServiceModel.class);
+    }
+
+    @Override
+    public UserServiceModel editUserPassword(String username, String updatePassword) {
+
+        User user = userRepository.findByUsername(username);
+        user.setPassword(passwordEncoder.encode(updatePassword));
+        return modelMapper.map(userRepository.saveAndFlush(user), UserServiceModel.class);
+    }
+
+    @Override
+    public UserServiceModel editUserProfilePicture(String username, String updateAvatarImageUrl) {
+
+        User user = userRepository.findByUsername(username);
+        user.setAvatarImageUrl(updateAvatarImageUrl);
+        return modelMapper.map(userRepository.saveAndFlush(user), UserServiceModel.class);
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username);
     }

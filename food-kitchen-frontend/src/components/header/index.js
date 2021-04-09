@@ -5,6 +5,7 @@ import LinkComponent, {StyledLink} from "../../components/link";
 import AuthContext from "../../AuthContext";
 import {Button} from "primereact/button";
 import styled from 'styled-components';
+import AvatarComponent from "../avatar";
 
 const Wrapper = styled.div`
     height: 70px;
@@ -42,7 +43,14 @@ const Header = () => {
             })
             }
 
-            {context.user ? <Button label="Logout" onClick={handleLogout}/> : null}
+            {context.user ? (
+                <>
+                    <Button label="Logout" onClick={handleLogout}/>
+                    <AvatarComponent image={
+                        context.user.avatarImageUrl ? context.user.avatarImageUrl :
+                        "https://png.pngtree.com/element_our/20200610/ourmid/pngtree-character-default-avatar-image_2237203.jpg"}/>
+                        </>
+            ) : null}
         </Wrapper>
     )
 };

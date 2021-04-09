@@ -13,4 +13,13 @@ public interface UserService extends UserDetailsService {
     boolean existsByUsername(String username);
 
     UserServiceModel findByUsername(String username);
+
+    UserServiceModel editUser(String oldUsername, String updateUsername,
+                              String oldPass,String updatePass, String updatePass2);
+
+    UserServiceModel editUserUsername(String oldUsername, String updateUsername);
+
+    UserServiceModel editUserPassword(String username, String updatePassword);
+
+    UserServiceModel editUserProfilePicture(String username, String updateAvatarImageUrl);
 }

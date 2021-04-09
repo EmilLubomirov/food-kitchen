@@ -19,11 +19,17 @@ public class JwtResponse {
     private String username;
     private String id;
     private Collection<? extends GrantedAuthority> authorities;
+    private String avatarImageUrl;
 
-    public JwtResponse(String accessToken, String id, String username, Collection<? extends GrantedAuthority> authorities) {
+    public JwtResponse(String accessToken,
+                       String id,
+                       String username,
+                       Collection<? extends GrantedAuthority> authorities,
+                       String avatarImageUrl) {
         this.id = id;
         this.token = accessToken;
         this.username = username;
         this.authorities = authorities;
+        this.avatarImageUrl = avatarImageUrl;
     }
 }

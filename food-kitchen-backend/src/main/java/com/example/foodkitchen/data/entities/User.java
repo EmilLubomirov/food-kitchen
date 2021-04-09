@@ -31,6 +31,9 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "avatar_image_url")
+    private String avatarImageUrl;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),

@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {useHistory} from "react-router-dom";
-import {openUploadWidget} from "../../utils/cloudinaryService";
+import {beginUpload} from "../../utils/cloudinaryService";
 import {CloudinaryContext} from "cloudinary-react"
 import PageLayout from "../../components/page-layout";
 import {InputText} from "primereact/inputtext";
@@ -47,27 +47,6 @@ const AddRecipePage = () => {
         })
     };
 
-    const beginUpload = () => {
-
-        const uploadOptions = {
-            cloudName: process.env.REACT_APP_CLOUD_NAME,
-            // tags: [tag],
-            uploadPreset: process.env.REACT_APP_UPLOAD_PRESET
-        };
-
-        openUploadWidget(uploadOptions, (error, photos) => {
-            if (!error) {
-
-                if(photos.event === "success"){
-                    // setImagesUrl(imagesUrl => [...imagesUrl, photos.info.secure_url]);
-                    setImageUrl(photos.info.secure_url);
-                }
-            } else {
-                console.log(error);
-            }
-        });
-    };
-
     return(
         <PageLayout>
             <CloudinaryContext cloudName={process.env.REACT_APP_CLOUD_NAME}>
@@ -82,7 +61,7 @@ const AddRecipePage = () => {
                     <h4>Description</h4>
                     <InputTextarea value={description} onChange={(e) => setDescription(e.target.value)}
                                    rows={5} cols={50} autoResize />
-                    <Button onClick={() => beginUpload()} label={"Add photo"}/>
+                    <Button onClick={() => beginUpload(setImageUrl)} label={"Add photo"}/>
                     <Button onClick={handleSubmit} label="Submit"/>
                 </Wrapper>
             </CloudinaryContext>
