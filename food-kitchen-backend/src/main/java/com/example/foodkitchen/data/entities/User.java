@@ -50,6 +50,9 @@ public class User extends BaseEntity implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"))
     private Set<CookBook> cookBooks;
 
+    @OneToMany(mappedBy = "initiator", fetch = FetchType.EAGER)
+    private Set<ForumComment> comments;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;

@@ -32,6 +32,10 @@ const getNavigation = (user) => {
         {
             title: 'Add Recipe',
             path: '/recipe/add'
+        },
+        {
+            title: 'Forum',
+            path: '/forum'
         }
     ];
 
