@@ -13,6 +13,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class ForumCategoryServiceModel {
 
+    private String id;
     private String title;
     private Set<ForumTopicServiceModel> topics;
 }

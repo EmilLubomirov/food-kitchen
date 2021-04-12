@@ -1,10 +1,11 @@
 package com.example.foodkitchen.api.controllers;
 
+import com.example.foodkitchen.data.models.binding.forumTopic.ForumTopicCreateModel;
 import com.example.foodkitchen.data.models.service.ForumCategoryServiceModel;
+import com.example.foodkitchen.data.models.service.ForumTopicServiceModel;
 import com.example.foodkitchen.data.services.ForumCategoryService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.foodkitchen.data.services.ForumTopicService;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -13,9 +14,11 @@ import java.util.List;
 public class ForumController {
 
     private final ForumCategoryService forumCategoryService;
+    private final ForumTopicService forumTopicService;
 
-    public ForumController(ForumCategoryService forumCategoryService) {
+    public ForumController(ForumCategoryService forumCategoryService, ForumTopicService forumTopicService) {
         this.forumCategoryService = forumCategoryService;
+        this.forumTopicService = forumTopicService;
     }
 
     @GetMapping
@@ -26,5 +29,10 @@ public class ForumController {
         }
 
         return forumCategoryService.findAll();
+    }
+
+    @PostMapping("/addTopic")
+    public ForumTopicServiceModel addTopic(@RequestBody ForumTopicCreateModel topicCreateModel){
+        return forumTopicService.add(topicCreateModel);
     }
 }

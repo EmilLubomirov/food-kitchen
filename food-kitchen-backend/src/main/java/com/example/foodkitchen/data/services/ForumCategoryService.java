@@ -8,6 +8,8 @@ public interface ForumCategoryService {
 
     List<ForumCategoryServiceModel> findAll();
 
+    ForumCategoryServiceModel findByTitle(String title);
+
     void seedForumCategoriesInDB();
 
     long count();

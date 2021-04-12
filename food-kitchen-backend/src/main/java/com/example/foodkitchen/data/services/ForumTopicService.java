@@ -1,5 +1,6 @@
 package com.example.foodkitchen.data.services;
 
+import com.example.foodkitchen.data.models.binding.forumTopic.ForumTopicCreateModel;
 import com.example.foodkitchen.data.models.service.ForumTopicServiceModel;
 
 import java.util.List;
@@ -7,4 +8,6 @@ import java.util.List;
 public interface ForumTopicService {
 
     List<ForumTopicServiceModel> findAll();
+
+    ForumTopicServiceModel add(ForumTopicCreateModel topic);
 }

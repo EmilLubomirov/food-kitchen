@@ -30,6 +30,11 @@ public class ForumCategoryServiceImpl implements ForumCategoryService {
     }
 
     @Override
+    public ForumCategoryServiceModel findByTitle(String title) {
+        return modelMapper.map(forumCategoryRepository.findByTitle(title), ForumCategoryServiceModel.class);
+    }
+
+    @Override
     public void seedForumCategoriesInDB() {
         forumCategoryRepository.saveAndFlush(new ForumCategory("How it's made"));
         forumCategoryRepository.saveAndFlush(new ForumCategory("Useful information and best practices"));
