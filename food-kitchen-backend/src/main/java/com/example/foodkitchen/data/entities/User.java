@@ -1,7 +1,7 @@
 package com.example.foodkitchen.data.entities;
 
 import com.example.foodkitchen.data.entities.base.BaseEntity;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -41,7 +41,7 @@ public class User extends BaseEntity implements UserDetails {
     private Set<Role> authorities;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    @JsonManagedReference
+    @JsonIgnore
     private Set<Recipe> recipes;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -51,6 +51,7 @@ public class User extends BaseEntity implements UserDetails {
     private Set<CookBook> cookBooks;
 
     @OneToMany(mappedBy = "initiator", fetch = FetchType.EAGER)
+    @JsonIgnore
     private Set<ForumComment> comments;
 
     @Override

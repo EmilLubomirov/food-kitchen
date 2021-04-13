@@ -9,6 +9,7 @@ import AuthContext from "./AuthContext";
 import RecipeDetailsPage from "./pages/recipe-details";
 import ProfilePage from "./pages/profile";
 import ForumPage from "./pages/forum";
+import ForumQuestionPage from "./pages/forum-topic";
 
 const Navigation = () => {
 
@@ -38,8 +39,12 @@ const Navigation = () => {
                 {isLoggedIn ? (<ProfilePage/>) : (<Redirect to="/"/>)}
             </Route>
 
-            <Route path='/forum'>
+            <Route path='/forum' exact>
                 {isLoggedIn ? (<ForumPage/>) : (<Redirect to="/"/>)}
+            </Route>
+
+            <Route path='/forum/:categoryName/:topicName'>
+                {isLoggedIn ? (<ForumQuestionPage/>) : (<Redirect to="/"/>)}
             </Route>
         </Switch>
     )

@@ -1,11 +1,14 @@
 package com.example.foodkitchen.data.repositories;
 
+import com.example.foodkitchen.data.entities.ForumComment;
 import com.example.foodkitchen.data.entities.ForumTopic;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public interface ForumTopicRepository extends JpaRepository<ForumTopic, String> {
+import java.util.List;
 
-    ForumTopic findByTitle(String title);
+@Repository
+public interface ForumCommentRepository extends JpaRepository<ForumComment, String> {
+
+    List<ForumComment> findAllByTopic(ForumTopic topic);
 }

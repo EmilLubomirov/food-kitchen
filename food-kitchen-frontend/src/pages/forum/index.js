@@ -6,6 +6,8 @@ import axios from "axios";
 import {Button} from "primereact/button";
 import DialogWindow from "../../components/dialog";
 import ForumAddTopicForm from "../../components/forum-add-topic-form";
+import {getCookie} from "../../utils/cookie";
+import LinkComponent from "../../components/link";
 
 const Wrapper = styled.div`
    display: flex;
@@ -34,14 +36,13 @@ const ForumPage = () => {
     };
 
     const getItems = () => {
-        console.log(categories);
-
         return categories.map(c => { return {label: c.title, items: getQuestionItems(c.title, c.topics)}});
     };
 
     const getQuestionItems = (catName, topics) => {
 
-        const arr = topics.map(t => {return {label: t.title}});
+        const arr = topics.map(t => {return {label: <LinkComponent path={`/forum/${catName}/${t.title}`}
+                                                                   title={t.title}/>}});
         arr.push({label: <Button label='Add Topic' onClick={() => handleSubmit(catName)}/>});
 
         return arr;
@@ -73,22 +74,24 @@ const ForumPage = () => {
           question
         };
 
-        const headers = {'Content-Type': 'application/json'};
+        const headers = {'Content-Type': 'application/json',
+                         'Authorization': getCookie(process.env.REACT_APP_AUTH_COOKIE_NAME)};
 
         axios.post(url, body, { headers })
             .then(res => {
 
                 if (res.status === 201){
-                    console.log('Saved');
+                    setVisibleTopicDialog(false);
                 }
         });
-
-        setVisibleTopicDialog(false);
     };
 
     useEffect(() => {
-        getForumCategories();
-    }, []);
+
+        if (!visibleTopicDialog){
+            getForumCategories();
+        }
+    }, [visibleTopicDialog]);
 
     return(
 

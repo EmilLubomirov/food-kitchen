@@ -5,15 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Set;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ForumTopicServiceModel {
+public class ForumCommentServiceModel {
 
-    private String id;
-    private String title;
-    private Set<ForumCommentServiceModel> comments;
+    private String content;
+    private UserServiceModel initiator;
 }
