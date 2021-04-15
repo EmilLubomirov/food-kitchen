@@ -7,8 +7,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -29,4 +31,7 @@ public class ForumTopic extends BaseEntity {
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     @JsonBackReference
     private ForumCategory category;
+
+    @CreationTimestamp
+    private Date date;
 }

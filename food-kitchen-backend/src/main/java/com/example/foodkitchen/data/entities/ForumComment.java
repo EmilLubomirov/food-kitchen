@@ -6,11 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "forum_comments")
@@ -19,6 +18,12 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ForumComment extends BaseEntity {
+
+    public ForumComment(String content, User initiator, ForumTopic topic){
+        this.content = content;
+        this.initiator = initiator;
+        this.topic = topic;
+    }
 
     private String content;
 
@@ -31,4 +36,7 @@ public class ForumComment extends BaseEntity {
     @JoinColumn(name = "topic_id", referencedColumnName = "id")
     @JsonBackReference
     private ForumTopic topic;
+
+    @CreationTimestamp
+    private Date date;
 }

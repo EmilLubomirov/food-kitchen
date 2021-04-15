@@ -2,12 +2,16 @@ package com.example.foodkitchen.data.services.impl;
 
 import com.example.foodkitchen.data.entities.ForumCategory;
 import com.example.foodkitchen.data.models.service.ForumCategoryServiceModel;
+import com.example.foodkitchen.data.models.service.ForumTopicServiceModel;
 import com.example.foodkitchen.data.repositories.ForumCategoryRepository;
 import com.example.foodkitchen.data.services.ForumCategoryService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,9 +27,21 @@ public class ForumCategoryServiceImpl implements ForumCategoryService {
 
     @Override
     public List<ForumCategoryServiceModel> findAll() {
+
         return forumCategoryRepository.findAll()
                 .stream()
-                .map(c -> modelMapper.map(c, ForumCategoryServiceModel.class))
+                .map(c -> {
+                    ForumCategoryServiceModel model = modelMapper.map(c, ForumCategoryServiceModel.class);
+
+                    Set<ForumTopicServiceModel> sortedTopics = model.getTopics()
+                            .stream()
+                            .sorted(Comparator.comparing(ForumTopicServiceModel::getDate))
+                            .collect(Collectors.toCollection(LinkedHashSet::new));
+
+                    model.setTopics(sortedTopics);
+
+                    return model;
+                })
                 .collect(Collectors.toList());
     }
 

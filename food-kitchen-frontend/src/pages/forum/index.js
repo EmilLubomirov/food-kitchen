@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from "react";
+import {useHistory} from "react-router-dom";
 import {PanelMenu} from "primereact/panelmenu";
 import PageLayout from "../../components/page-layout";
 import styled from "styled-components";
@@ -25,6 +26,8 @@ const ForumPage = () => {
     const [topicName, setTopicName] = useState('');
     const [question, setQuestion] = useState('');
 
+    const history = useHistory();
+
     const getForumCategories = () => {
 
         axios.get('http://localhost:8080/api/forum')
@@ -41,7 +44,7 @@ const ForumPage = () => {
 
     const getQuestionItems = (catName, topics) => {
 
-        const arr = topics.map(t => {return {label: <LinkComponent path={`/forum/${catName}/${t.title}`}
+        const arr = topics.map(t => {return {label: <LinkComponent path={`/forum/${catName}/${t.id}`}
                                                                    title={t.title}/>}});
         arr.push({label: <Button label='Add Topic' onClick={() => handleSubmit(catName)}/>});
 
@@ -80,8 +83,10 @@ const ForumPage = () => {
         axios.post(url, body, { headers })
             .then(res => {
 
+                const { id } = res.data;
+
                 if (res.status === 201){
-                    setVisibleTopicDialog(false);
+                    history.push(`/forum/${categoryName}/${id}`)
                 }
         });
     };

@@ -10,9 +10,6 @@ import com.example.foodkitchen.data.services.ForumCommentService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Service
 public class ForumCommentServiceImpl implements ForumCommentService {
 
@@ -34,19 +31,15 @@ public class ForumCommentServiceImpl implements ForumCommentService {
     }
 
     @Override
-    public ForumCommentServiceModel add(String content, String topicName, User user) {
+    public ForumCommentServiceModel add(String content, String topicId, User user) {
 
-        ForumTopic topic = forumTopicRepository.findByTitle(topicName);
+        ForumTopic topic = forumTopicRepository.findById(topicId).orElse(null);
+
+        if (topic == null){
+            return null;
+        }
+
         ForumComment comment = new ForumComment(content, user, topic);
-
         return modelMapper.map(forumCommentRepository.saveAndFlush(comment), ForumCommentServiceModel.class);
-    }
-
-    @Override
-    public List<ForumCommentServiceModel> findAllByTopicName(String topicName) {
-
-        return forumTopicRepository.findByTitle(topicName).getComments().stream()
-                .map(c -> modelMapper.map(c, ForumCommentServiceModel.class))
-                .collect(Collectors.toList());
     }
 }

@@ -39,6 +39,11 @@ public class ForumController {
         return forumCategoryService.findAll();
     }
 
+    @GetMapping("/{topicId}")
+    public ForumTopicServiceModel findTopicById(@PathVariable String topicId){
+        return forumTopicService.findById(topicId);
+    }
+
     @PostMapping("/addTopic")
     @ResponseStatus(code = HttpStatus.CREATED)
     public ForumTopicServiceModel addTopic(@RequestBody ForumTopicCreateModel topicCreateModel,
@@ -46,15 +51,10 @@ public class ForumController {
         return forumTopicService.add(topicCreateModel, principal);
     }
 
-    @GetMapping("/{topicName}/comments")
-    public List<ForumCommentServiceModel> findAllForTopic(@PathVariable String topicName){
-        return forumCommentService.findAllByTopicName(topicName);
-    }
-
-    @PostMapping("/{topicName}/addComment")
+    @PostMapping("/{topicId}/addComment")
     public ForumCommentServiceModel addComment(@RequestBody ForumCommentCreateModel model,
-                                               @PathVariable String topicName,
+                                               @PathVariable String topicId,
                                                @AuthenticationPrincipal User principal){
-        return forumCommentService.add(model.getContent(), topicName, principal);
+        return forumCommentService.add(model.getContent(), topicId, principal);
     }
 }

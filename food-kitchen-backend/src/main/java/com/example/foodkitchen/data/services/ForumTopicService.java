@@ -11,4 +11,6 @@ public interface ForumTopicService {
     List<ForumTopicServiceModel> findAll();
 
     ForumTopicServiceModel add(ForumTopicCreateModel topicCreateModel, User principal);
+
+    ForumTopicServiceModel findById(String id);
 }

@@ -43,7 +43,7 @@ const Navigation = () => {
                 {isLoggedIn ? (<ForumPage/>) : (<Redirect to="/"/>)}
             </Route>
 
-            <Route path='/forum/:categoryName/:topicName'>
+            <Route path='/forum/:categoryName/:topicId'>
                 {isLoggedIn ? (<ForumQuestionPage/>) : (<Redirect to="/"/>)}
             </Route>
         </Switch>

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
 import java.util.Set;
 
 @Getter
@@ -15,5 +16,6 @@ public class ForumTopicServiceModel {
 
     private String id;
     private String title;
+    private Date date;
     private Set<ForumCommentServiceModel> comments;
 }

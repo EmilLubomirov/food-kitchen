@@ -10,7 +10,5 @@ public interface ForumCommentService {
 
     ForumCommentServiceModel add(String content, ForumTopic topic, User user);
 
-    ForumCommentServiceModel add(String content, String topicName, User user);
-
-    List<ForumCommentServiceModel> findAllByTopicName(String topicName);
+    ForumCommentServiceModel add(String content, String topicId, User user);
 }

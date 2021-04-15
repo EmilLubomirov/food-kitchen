@@ -17,31 +17,33 @@ const Wrapper = styled.div`
 const ForumTopicPage = () => {
 
     const [comments, setComments] = useState([]);
+    const [topicTitle, setTopicTitle] = useState('');
     const [personalComment, setPersonalComment] = useState('');
 
-    const { categoryName, topicName } = useParams();
+    const { categoryName, topicId } = useParams();
     const context = useContext(AuthContext);
 
     const { avatarImageUrl } = context.user;
-    console.log(avatarImageUrl);
 
     const getTopicComments = useCallback(() => {
 
-        axios.get(`http://localhost:8080/api/forum/${topicName}/comments`)
+        axios.get(`http://localhost:8080/api/forum/${topicId}`)
             .then(res => {
 
                 if (res.status === 200){
-                    setComments(res.data);
+
+                    setTopicTitle(res.data.title);
+                    setComments(res.data.comments);
                 }
             })
-    }, [topicName]);
+    }, [topicId]);
 
     const handleSubmit = () => {
 
-        const url = `http://localhost:8080/api/forum/${topicName}/addComment`;
+        const url = `http://localhost:8080/api/forum/${topicId}/addComment`;
 
         const headers =  { 'Content-Type': 'application/json',
-            'Authorization': getCookie(process.env.REACT_APP_AUTH_COOKIE_NAME) };
+                            'Authorization': getCookie(process.env.REACT_APP_AUTH_COOKIE_NAME) };
 
         const body = {
             content: personalComment
@@ -65,16 +67,16 @@ const ForumTopicPage = () => {
     return (
         <PageLayout>
             <Wrapper>
-                <h1>{topicName}</h1>
+                <h1>{topicTitle}</h1>
 
                 {
-                    comments.map(c => {
+                   comments.length > 0 ? comments.map((c, index) => {
 
                         const { avatarImageUrl, username } = c.initiator;
 
-                        return (
+                       return (
 
-                            <div style={{display: "flex"}}>
+                            <div key={index} style={{display: "flex"}}>
 
                                 <div style={{margin: "20px"}}>
                                     <AvatarComponent image={avatarImageUrl}/>
@@ -91,7 +93,7 @@ const ForumTopicPage = () => {
                                 </div>
                             </div>
                         )
-                    })
+                    }) : null
                 }
 
                 <div style={{display: "flex"}}>
