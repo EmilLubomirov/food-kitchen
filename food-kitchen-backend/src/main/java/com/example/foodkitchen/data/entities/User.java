@@ -44,12 +44,6 @@ public class User extends BaseEntity implements UserDetails {
     @JsonIgnore
     private Set<Recipe> recipes;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "books_owners",
-            joinColumns = @JoinColumn(name = "owner_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"))
-    private Set<CookBook> cookBooks;
-
     @OneToMany(mappedBy = "initiator", fetch = FetchType.EAGER)
     @JsonIgnore
     private Set<ForumComment> comments;

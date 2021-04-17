@@ -12,10 +12,8 @@ import LinkComponent from "../../components/link";
 
 const Wrapper = styled.div`
    display: flex;
-   // flex-flow: column wrap;
-   justify-content: space-around;
+   flex-flow: column;
    align-items: center;
-   height: 400px;
 `;
 
 const ForumPage = () => {
@@ -102,7 +100,7 @@ const ForumPage = () => {
 
         <PageLayout>
             <Wrapper className="card">
-                <h1>Choose category</h1>
+                <h1 style={{margin: "50px"}}>Choose category</h1>
                 <PanelMenu model={getItems(categories)} style={{ width: '44rem' }}/>
 
                 <DialogWindow visible={visibleTopicDialog}

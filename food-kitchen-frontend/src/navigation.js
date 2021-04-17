@@ -10,6 +10,7 @@ import RecipeDetailsPage from "./pages/recipe-details";
 import ProfilePage from "./pages/profile";
 import ForumPage from "./pages/forum";
 import ForumQuestionPage from "./pages/forum-topic";
+import BookPage from "./pages/book";
 
 const Navigation = () => {
 
@@ -46,6 +47,8 @@ const Navigation = () => {
             <Route path='/forum/:categoryName/:topicId'>
                 {isLoggedIn ? (<ForumQuestionPage/>) : (<Redirect to="/"/>)}
             </Route>
+
+            <Route path='/book' exact component={BookPage}/>
         </Switch>
     )
 };
