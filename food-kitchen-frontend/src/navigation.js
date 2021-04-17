@@ -11,6 +11,8 @@ import ProfilePage from "./pages/profile";
 import ForumPage from "./pages/forum";
 import ForumQuestionPage from "./pages/forum-topic";
 import BookPage from "./pages/book";
+import ArticlePage from "./pages/article";
+import ArticleDetailsPage from "./pages/article-details";
 
 const Navigation = () => {
 
@@ -20,6 +22,7 @@ const Navigation = () => {
     return (
         <Switch>
             <Route path='/' exact component={HomePage}/>
+
             <Route path='/recipe' exact component={RecipePage}/>
 
             <Route path='/recipe/add'>
@@ -48,7 +51,11 @@ const Navigation = () => {
                 {isLoggedIn ? (<ForumQuestionPage/>) : (<Redirect to="/"/>)}
             </Route>
 
-            <Route path='/book' exact component={BookPage}/>
+            <Route path='/book' component={BookPage}/>
+
+            <Route path='/article' exact component={ArticlePage}/>
+
+            <Route path='/article/:articleId' component={ArticleDetailsPage}/>
         </Switch>
     )
 };

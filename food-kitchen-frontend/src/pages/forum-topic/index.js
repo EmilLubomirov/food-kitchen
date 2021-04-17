@@ -20,7 +20,7 @@ const ForumTopicPage = () => {
     const [topicTitle, setTopicTitle] = useState('');
     const [personalComment, setPersonalComment] = useState('');
 
-    const { categoryName, topicId } = useParams();
+    const { topicId } = useParams();
     const context = useContext(AuthContext);
 
     const { avatarImageUrl } = context.user;

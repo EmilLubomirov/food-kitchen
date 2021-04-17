@@ -1,10 +1,4 @@
-import { Cloudinary as CoreCloudinary, Util } from 'cloudinary-core';
-
-const url = (publicId, options) => {
-    const scOptions = Util.withSnakeCaseKeys(options);
-    const cl = CoreCloudinary.new();
-    return cl.url(publicId, scOptions);
-};
+import { Util } from 'cloudinary-core';
 
 const openUploadWidget = (options, callback) => {
     const scOptions = Util.withSnakeCaseKeys(options);

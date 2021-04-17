@@ -19,12 +19,6 @@ import java.util.Date;
 @AllArgsConstructor
 public class ForumComment extends BaseEntity {
 
-    public ForumComment(String content, User initiator, ForumTopic topic){
-        this.content = content;
-        this.initiator = initiator;
-        this.topic = topic;
-    }
-
     private String content;
 
     @ManyToOne
@@ -39,4 +33,10 @@ public class ForumComment extends BaseEntity {
 
     @CreationTimestamp
     private Date date;
+
+    public ForumComment(String content, User initiator, ForumTopic topic){
+        this.content = content;
+        this.initiator = initiator;
+        this.topic = topic;
+    }
 }

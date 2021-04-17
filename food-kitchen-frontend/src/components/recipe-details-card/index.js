@@ -13,7 +13,9 @@ const RecipeDetailsCard = ({recipe}) => {
     const {title, imageUrl, description, publisher} = recipe;
 
     const header = (
-        <img src={imageUrl} alt={title} onError={(e) => e.target.src='https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} />
+        <img src={imageUrl}
+             alt={title}
+             onError={(e) => e.target.src='https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} />
     );
 
     return (

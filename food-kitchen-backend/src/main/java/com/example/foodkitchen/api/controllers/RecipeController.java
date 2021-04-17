@@ -30,14 +30,14 @@ public class RecipeController {
         return recipeService.findAll();
     }
 
+    @GetMapping("/{id}")
+    public RecipeServiceModel findById(@PathVariable String id){
+        return recipeService.findById(id);
+    }
+
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
     public Recipe add(@RequestBody Recipe recipe, @AuthenticationPrincipal User principal){
         return recipeService.add(recipe, principal.getUsername());
-    }
-
-    @GetMapping("/{id}")
-    public RecipeServiceModel findById(@PathVariable String id){
-        return recipeService.findById(id);
     }
 }

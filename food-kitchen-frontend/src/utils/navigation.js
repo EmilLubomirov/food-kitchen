@@ -13,6 +13,10 @@ const getNavigation = (user) => {
             title: 'Books',
             path: '/book'
         },
+        {
+            title: 'Articles',
+            path: '/article'
+        },
     ];
 
     const guestLinks = [

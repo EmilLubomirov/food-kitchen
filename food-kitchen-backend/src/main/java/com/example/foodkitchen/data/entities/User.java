@@ -21,10 +21,6 @@ import java.util.Set;
 @AllArgsConstructor
 public class User extends BaseEntity implements UserDetails {
 
-    public User(String id){
-        super(id);
-    }
-
     @Column(name = "username")
     private String username;
 
@@ -47,6 +43,10 @@ public class User extends BaseEntity implements UserDetails {
     @OneToMany(mappedBy = "initiator", fetch = FetchType.EAGER)
     @JsonIgnore
     private Set<ForumComment> comments;
+
+    public User(String id){
+        super(id);
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

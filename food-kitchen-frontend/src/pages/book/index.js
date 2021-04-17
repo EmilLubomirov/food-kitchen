@@ -126,7 +126,8 @@ const BookPage = () =>{
                             {
                                 books.map(b => {
 
-                                    return(  <AccordionTab header={renderHeader(b)}>
+                                    return(  <AccordionTab key={b.id}
+                                                           header={renderHeader(b)}>
                                            {/*<div>*/}
                                            {/*    <iframe title="coordinates"*/}
                                            {/*            src={`https://www.google.com/maps/search/?api=1&query=58.698017,-152.522067`}*/}
