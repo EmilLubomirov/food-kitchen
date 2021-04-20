@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -14,4 +16,6 @@ public class RecipeServiceModel extends BaseInfoEntity {
 
     private String imageUrl;
     private String publisher;
+    private double rating;
+    private Set<UserServiceModel> voters;
 }

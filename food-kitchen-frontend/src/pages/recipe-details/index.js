@@ -14,7 +14,8 @@ const RecipeDetailsPage = () => {
 
         const recipeId = params.recipeId;
 
-        axios.get(`http://localhost:8080/api/recipe/${recipeId}`).then(res => {
+        axios.get(`http://localhost:8080/api/recipe/${recipeId}`)
+            .then(res => {
 
             if (res.status === 200){
                 setRecipe(res.data);

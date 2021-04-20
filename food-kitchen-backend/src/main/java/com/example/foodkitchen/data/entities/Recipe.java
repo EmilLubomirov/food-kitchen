@@ -32,4 +32,13 @@ public class Recipe extends BaseInfoEntity {
             joinColumns = @JoinColumn(name = "recipe_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "category_id", referencedColumnName = "id"))
     private Set<FoodCategory> categories;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "recipes_voters",
+            joinColumns = @JoinColumn(name = "recipe_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "voter_id", referencedColumnName = "id"))
+    private Set<User> voters;
+
+    @Column(name = "rating", columnDefinition = "decimal(3, 2) default 0")
+    private double rating;
 }

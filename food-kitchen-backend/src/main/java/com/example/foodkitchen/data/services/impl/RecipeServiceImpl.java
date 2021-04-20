@@ -69,4 +69,42 @@ public class RecipeServiceImpl implements RecipeService {
 
         return null;
     }
+
+    @Override
+    public RecipeServiceModel updateRating(RecipeServiceModel recipe, User user) {
+
+        Recipe recipeById = recipeRepository.findById(recipe.getId()).orElse(null);
+        User voter = userRepository.findByUsername(user.getUsername());
+
+        if (recipeById == null || voter == null){
+            return null;
+        }
+
+        boolean hasVoted = voter.getRatedRecipes()
+                .stream()
+                .anyMatch(r -> r.getId().equals(recipe.getId()));
+
+        if (hasVoted){
+            return recipe;
+        }
+
+        double avgRating = recipe.getRating();
+
+        if (recipeById.getRating() > 0){
+            avgRating = (recipeById.getRating() + recipe.getRating()) / 2.0;
+        }
+
+        recipeById.setRating(avgRating);
+
+        if (recipeById.getVoters() == null){
+            recipeById.setVoters(Set.of(user));
+        }
+
+        else {
+            recipeById.getVoters().add(voter);
+        }
+
+        return modelMapper.map(recipeRepository.saveAndFlush(recipeById),
+                RecipeServiceModel.class);
+    }
 }

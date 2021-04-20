@@ -1,13 +1,18 @@
 import React from "react";
-import PageLayout from "../../components/page-layout";
 import Gallery from "../../components/gallery";
+import Header from "../../components/header";
+import Footer from "../../components/footer";
 
 const HomePage = () => {
 
     return (
-        <PageLayout>
-            <Gallery/>
-        </PageLayout>
+        <>
+            <Header/>
+            <main style={{padding: 0}}>
+                <Gallery/>
+            </main>
+            <Footer/>
+        </>
     )
 };
 
