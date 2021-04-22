@@ -1,14 +1,19 @@
 package com.example.foodkitchen.data.services.impl;
 
+import com.example.foodkitchen.data.entities.FoodCategory;
 import com.example.foodkitchen.data.entities.Recipe;
 import com.example.foodkitchen.data.entities.User;
+import com.example.foodkitchen.data.models.binding.recipe.RecipeFilterModel;
+import com.example.foodkitchen.data.models.service.FoodCategoryServiceModel;
 import com.example.foodkitchen.data.models.service.RecipeServiceModel;
+import com.example.foodkitchen.data.repositories.FoodCategoryRepository;
 import com.example.foodkitchen.data.repositories.RecipeRepository;
 import com.example.foodkitchen.data.repositories.UserRepository;
 import com.example.foodkitchen.data.services.RecipeService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -19,11 +24,13 @@ public class RecipeServiceImpl implements RecipeService {
 
     private final RecipeRepository recipeRepository;
     private final UserRepository userRepository;
+    private final FoodCategoryRepository foodCategoryRepository;
     private final ModelMapper modelMapper;
 
-    public RecipeServiceImpl(RecipeRepository recipeRepository, UserRepository userRepository, ModelMapper modelMapper) {
+    public RecipeServiceImpl(RecipeRepository recipeRepository, UserRepository userRepository, FoodCategoryRepository foodCategoryRepository, ModelMapper modelMapper) {
         this.recipeRepository = recipeRepository;
         this.userRepository = userRepository;
+        this.foodCategoryRepository = foodCategoryRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -36,7 +43,41 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
+    public List<RecipeServiceModel> findByCategories(RecipeFilterModel recipe) {
+
+        if (recipe.getCategories().size() == 0){
+            return findAll();
+        }
+
+        List<String> chosenCategories = recipe.getCategories()
+                .stream()
+                .map(FoodCategoryServiceModel::getName)
+                .collect(Collectors.toList());
+
+        return recipeRepository.findAll()
+                .stream()
+                .filter(r -> r.getCategories()
+                        .stream()
+                        .map(FoodCategory::getName)
+                        .collect(Collectors.toList())
+                        .stream()
+                        .anyMatch(chosenCategories::contains))
+                .collect(Collectors.toList())
+                .stream()
+                .map(r -> modelMapper.map(r, RecipeServiceModel.class))
+                .sorted(Comparator.comparing(RecipeServiceModel::getRating).reversed())
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public Recipe add(Recipe recipe, String userUsername) {
+
+        Set<FoodCategory> categories = recipe.getCategories()
+                .stream()
+                .map(c -> foodCategoryRepository.findByName(c.getName()))
+                .collect(Collectors.toSet());
+
+        recipe.setCategories(categories);
 
         Recipe savedRecipe = recipeRepository.saveAndFlush(recipe);
         User user = userRepository.findByUsername(userUsername);

@@ -53,7 +53,7 @@ const RecipeDetailsCard = ({recipe}) => {
             voters.some(v => v.username === context.user.username) ?
                 null :
         <div>
-            <h5>Do you like this recipe?</h5>
+            <h5>Did you like this recipe?</h5>
             <Rating value={rating} cancel={false} readOnly={isRatingReadOnly} onChange={(e) => handleRatingChange(e.value)}  />
         </div> : null
 

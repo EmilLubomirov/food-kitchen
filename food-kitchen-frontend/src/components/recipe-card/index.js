@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import {Card} from "primereact/card";
 import LinkComponent from "../link";
 import {Rating} from "primereact/rating";
