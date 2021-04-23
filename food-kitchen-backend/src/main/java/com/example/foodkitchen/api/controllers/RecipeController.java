@@ -30,12 +30,6 @@ public class RecipeController {
         return recipeService.findAll();
     }
 
-//    @GetMapping("/filter")
-//    public List<RecipeServiceModel> findByCategories(@RequestParam("categories")
-//                                                                 List<FoodCategoryServiceModel> categories){
-//        return null;
-//    }
-
     @GetMapping("/{id}")
     public RecipeServiceModel findById(@PathVariable String id){
         return recipeService.findById(id);
@@ -49,6 +43,11 @@ public class RecipeController {
         }
 
         return foodCategoryService.findAll();
+    }
+
+    @GetMapping("/favorite")
+    public List<RecipeServiceModel> findUserFavorites(@AuthenticationPrincipal User principal){
+        return recipeService.findFavoriteRecipes(principal.getUsername());
     }
 
     @PostMapping
@@ -67,4 +66,18 @@ public class RecipeController {
                                      @AuthenticationPrincipal User principal){
         return recipeService.updateRating(model, principal);
     }
+
+    @PatchMapping("/addToFavorites")
+    public RecipeServiceModel addToFavorites(@RequestBody RecipeServiceModel model,
+                                             @AuthenticationPrincipal User principal){
+
+        return recipeService.addToFavorites(model, principal);
+    }
+
+    @DeleteMapping("/deleteFromFav")
+    public RecipeServiceModel deleteFromFavorites(@RequestParam String id,
+                                                  @AuthenticationPrincipal User principal){
+        return recipeService.deleteFromFavorites(id, principal.getUsername());
+    }
+
 }

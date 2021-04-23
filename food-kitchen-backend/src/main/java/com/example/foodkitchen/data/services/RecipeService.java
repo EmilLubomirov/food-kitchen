@@ -18,4 +18,10 @@ public interface RecipeService {
     RecipeServiceModel findById(String id);
 
     RecipeServiceModel updateRating(RecipeServiceModel recipe, User user);
+
+    RecipeServiceModel addToFavorites(RecipeServiceModel recipe, User user);
+
+    List<RecipeServiceModel> findFavoriteRecipes(String username);
+
+    RecipeServiceModel deleteFromFavorites(String recipeId, String username);
 }

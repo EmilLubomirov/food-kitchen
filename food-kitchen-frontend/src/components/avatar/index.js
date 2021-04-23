@@ -1,32 +1,35 @@
-import React from "react";
+import React, {useRef} from "react";
 import {Avatar} from "primereact/avatar";
-import LinkComponent from "../link";
+import AvatarDropdownMenu from "../avatar-dropdown-menu";
 
-const AvatarComponent = ({image}) => {
+const AvatarComponent = ({image, handleLogout}) => {
 
-    const style = { backgroundColor: '#2196F3', color: '#ffffff' };
+    const menu = useRef(null);
 
     return (
-        <LinkComponent path='/profile'>
-            <div className="p-col-12 p-md-4">
-                <div className="card">
+        <div>
 
-                    {
-                        image ?
-                            (
-                                <Avatar className="p-mr-2" size="large"
-                                image={image}
-                                    style={style} shape="circle" />
-                                    )
-                            : (
-                                <Avatar icon="pi pi-user" className="p-mr-2" size="large"
-                                        style={style}
-                                        shape="circle" />
-                            )
-                    }
-                </div>
+            <div className="card">
+
+                {
+                    image ?
+                        (
+                            <Avatar className="p-mr-2" size="large"
+                                    image={image}
+                                    shape="circle"
+                                    onClick={(event) => menu.current.toggle(event)}/>
+                        )
+                        : (
+                            <Avatar icon="pi pi-user" className="p-mr-2" size="large"
+                                    shape="circle"
+                                    onClick={(event) => menu.current.toggle(event)}/>
+                        )
+                }
             </div>
-        </LinkComponent>
+
+            <AvatarDropdownMenu menu={menu}
+                                handleLogout={handleLogout}/>
+        </div>
     )
 };
 

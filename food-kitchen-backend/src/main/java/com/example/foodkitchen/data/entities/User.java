@@ -48,6 +48,10 @@ public class User extends BaseEntity implements UserDetails {
     @JsonIgnore
     private Set<Recipe> ratedRecipes;
 
+    @ManyToMany(mappedBy = "fans", fetch = FetchType.EAGER)
+    @JsonIgnore
+    private Set<Recipe> favorites;
+
     public User(String id){
         super(id);
     }

@@ -18,4 +18,5 @@ public class RecipeServiceModel extends BaseInfoEntity {
     private String publisher;
     private double rating;
     private Set<UserServiceModel> voters;
+    private Set<UserServiceModel> fans;
 }

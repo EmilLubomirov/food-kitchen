@@ -12,12 +12,25 @@ const Wrapper = styled.div`
     margin: 30px;
 `;
 
+const StyledFavIcon = styled.i`
+
+    font-size: 2rem;
+    color: rgb(255 0 0 / 67%);
+    transition: transform 0.4s;
+    
+    &:hover{
+        cursor: pointer;
+        transform: scale(1.15);
+    }
+`;
+
 const RecipeDetailsCard = ({recipe}) => {
 
     const [rating, setRating] = useState(null);
     const [isRatingReadOnly, setRatingReadOnly] = useState(false);
+    const [isFavVisible, setFavVisible] = useState(undefined);
 
-    const {id, title, imageUrl, description, publisher, voters } = recipe;
+    const { id, title, imageUrl, description, publisher, voters, fans } = recipe;
     const context = useContext(AuthContext);
 
     const handleRatingChange = (e) => {
@@ -41,6 +54,39 @@ const RecipeDetailsCard = ({recipe}) => {
             });
     };
 
+    const handleFavClick = () => {
+
+        const url = `http://localhost:8080/api/recipe/addToFavorites`;
+
+        const headers = {'Content-Type': 'application/json',
+                         'Authorization': getCookie(process.env.REACT_APP_AUTH_COOKIE_NAME)};
+
+        axios.patch(url, { id }, { headers })
+            .then(res => {
+
+                if (res.status === 200){
+                    setFavVisible(false);
+                }
+            });
+    };
+
+    const renderTitle = (
+
+        context.user ?
+            fans.some(f => f.username === context.user.username) ?
+                <span>{title}</span> :
+                <div style={{display: "flex", justifyContent: "space-between"}}>
+                    <span>{title}</span>
+
+                    <div onClick={handleFavClick}
+                         style={
+                             isFavVisible === false ? {display: "none"} :
+                             {width: "fit-content"}}>
+                        <StyledFavIcon className="pi pi-heart p-mr-4 p-text-secondary p-overlay-badge"/>
+                    </div>
+                </div> : null
+    );
+
     const header = (
         <img src={imageUrl}
              alt={title}
@@ -54,7 +100,10 @@ const RecipeDetailsCard = ({recipe}) => {
                 null :
         <div>
             <h5>Did you like this recipe?</h5>
-            <Rating value={rating} cancel={false} readOnly={isRatingReadOnly} onChange={(e) => handleRatingChange(e.value)}  />
+            <Rating value={rating}
+                    cancel={false}
+                    readOnly={isRatingReadOnly}
+                    onChange={(e) => handleRatingChange(e.value)}  />
         </div> : null
 
     );
@@ -69,7 +118,7 @@ const RecipeDetailsCard = ({recipe}) => {
 
     return (
         <Wrapper>
-            <Card title={title} subTitle="Subtitle"
+            <Card title={renderTitle} subTitle="Subtitle"
                   style={{ width: '25em' }}
                   header={header}
                   footer={footer}>

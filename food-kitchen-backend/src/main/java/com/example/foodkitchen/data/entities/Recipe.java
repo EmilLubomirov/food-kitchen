@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.engine.internal.Cascade;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -41,4 +42,10 @@ public class Recipe extends BaseInfoEntity {
 
     @Column(name = "rating", columnDefinition = "decimal(3, 2) default 0")
     private double rating;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "recipes_fans",
+            joinColumns = @JoinColumn(name = "recipe_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "fan_id", referencedColumnName = "id"))
+    private Set<User> fans;
 }

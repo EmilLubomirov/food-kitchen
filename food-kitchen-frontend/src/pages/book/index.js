@@ -81,7 +81,8 @@ const BookPage = () =>{
 
             <div style={{display: "flex", alignItems: "center"}}>
 
-                <img style={{maxWidth: "5%", margin: "0 70px"}} src={book.imageUrl} alt={book.title}/>
+                <img style={{maxWidth: "5%", margin: "0 70px"}}
+                     src={book.imageUrl} alt={book.title}/>
 
                 <StyledHeading>Title: {book.title}</StyledHeading>
                 <StyledHeading>Author: {book.author}</StyledHeading>

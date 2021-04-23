@@ -45,10 +45,10 @@ const Header = () => {
 
             {context.user ? (
                 <>
-                    <Button label="Logout" onClick={handleLogout}/>
                     <AvatarComponent image={
                         context.user.avatarImageUrl ? context.user.avatarImageUrl :
-                        "https://png.pngtree.com/element_our/20200610/ourmid/pngtree-character-default-avatar-image_2237203.jpg"}/>
+                        "https://png.pngtree.com/element_our/20200610/ourmid/pngtree-character-default-avatar-image_2237203.jpg"}
+                        handleLogout={handleLogout}/>
                         </>
             ) : null}
         </Wrapper>

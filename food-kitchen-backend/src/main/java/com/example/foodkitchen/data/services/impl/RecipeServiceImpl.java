@@ -13,10 +13,7 @@ import com.example.foodkitchen.data.services.RecipeService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -146,6 +143,85 @@ public class RecipeServiceImpl implements RecipeService {
         }
 
         return modelMapper.map(recipeRepository.saveAndFlush(recipeById),
+                RecipeServiceModel.class);
+    }
+
+    @Override
+    public RecipeServiceModel addToFavorites(RecipeServiceModel recipe, User user) {
+
+        Recipe recipeById = recipeRepository.findById(recipe.getId()).orElse(null);
+        User fan = userRepository.findByUsername(user.getUsername());
+
+        if (recipeById == null || fan == null){
+            return recipe;
+        }
+
+        if (recipeById.getFans() != null){
+
+            boolean hasAlreadyLiked =
+                    recipeById.getFans()
+                    .stream()
+                    .anyMatch(u -> u.getUsername().equals(user.getUsername()));
+
+            if (!hasAlreadyLiked){
+                recipeById.getFans().add(user);
+            }
+
+            else {
+                return modelMapper.map(recipeById, RecipeServiceModel.class);
+            }
+        }
+
+        else {
+            recipeById.setFans(Set.of(user));
+        }
+
+        return modelMapper.map(recipeRepository.saveAndFlush(recipeById),
+                RecipeServiceModel.class);
+    }
+
+    @Override
+    public List<RecipeServiceModel> findFavoriteRecipes(String username) {
+
+        User user = userRepository.findByUsername(username);
+
+        if (user == null){
+            return null;
+        }
+
+        return user.getFavorites()
+                .stream()
+                .map(r -> modelMapper.map(r, RecipeServiceModel.class))
+                .sorted(Comparator.comparing(RecipeServiceModel::getRating).reversed())
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public RecipeServiceModel deleteFromFavorites(String recipeId, String username) {
+
+        User user = userRepository.findByUsername(username);
+        Recipe recipe = recipeRepository.findById(recipeId).orElse(null);
+
+        if (user == null || recipe == null){
+            return null;
+        }
+
+        Set<Recipe> updatedRecipes = user.getFavorites()
+                .stream()
+                .filter(r -> !r.getId().equals(recipeId))
+                .collect(Collectors.toSet());
+
+        user.setFavorites(updatedRecipes);
+        userRepository.saveAndFlush(user);
+
+        Set<User> updatedFans = recipe.getFans()
+                .stream()
+                .filter(f -> !f.getUsername().equals(username))
+                .collect(Collectors.toSet());
+
+        recipe.setFans(updatedFans);
+
+        return modelMapper.map(recipeRepository.saveAndFlush(recipe),
                 RecipeServiceModel.class);
     }
 }
