@@ -10,12 +10,20 @@ const FilterWrapper = styled.div`
     display: flex;
     justify-content: flex-end;
     margin-bottom: 40px;
+    
+    @media screen and (max-width: 400px) {
+        flex-flow: column;
+    }
 `;
 
 const CheckboxWrapper = styled.div`
     margin-right: 25px;
     font-weight: bolder;
     font-size: 17px;
+    
+    @media screen and (max-width: 400px) {
+        margin-bottom: 15px;
+    }
 `;
 
 const RecipePage = () => {

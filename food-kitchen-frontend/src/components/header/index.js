@@ -3,7 +3,6 @@ import {useHistory} from "react-router-dom";
 import getNavigation from "../../utils/navigation";
 import LinkComponent, {StyledLink} from "../../components/link";
 import AuthContext from "../../AuthContext";
-import {Button} from "primereact/button";
 import styled from 'styled-components';
 import AvatarComponent from "../avatar";
 
@@ -16,6 +15,11 @@ const Wrapper = styled.div`
     
     & ${StyledLink} {
         font-weight: bolder;
+    }
+    
+    @media screen and (max-width: 500px) {
+        flex-flow: column;
+        height: 300px;
     }
 `;
 

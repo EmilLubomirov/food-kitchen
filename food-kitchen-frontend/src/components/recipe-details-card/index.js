@@ -15,7 +15,6 @@ const Wrapper = styled.div`
 const StyledFavIcon = styled.i`
 
     font-size: 2rem;
-    color: rgb(255 0 0 / 67%);
     transition: transform 0.4s;
     
     &:hover{

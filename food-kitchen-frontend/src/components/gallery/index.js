@@ -1,7 +1,16 @@
 import React, {useEffect, useState} from "react";
 import {Galleria} from "primereact/galleria";
+import styled from "styled-components";
 
-
+const StyledImage = styled.img`
+    
+    max-width: 100%;
+    display: block;
+    
+     @media screen and (max-width: 1000px) {
+        
+    }
+`;
 const Gallery = () => {
 
     const [images, setImages] = useState([]);
@@ -26,7 +35,7 @@ const Gallery = () => {
     };
 
     const itemTemplate = (item) => {
-        return <img src={item.src} alt="img" style={{ width: '100%', display: 'block'}} />;
+        return <StyledImage src={item.src} alt="img" />;
     };
 
     useEffect(() => {

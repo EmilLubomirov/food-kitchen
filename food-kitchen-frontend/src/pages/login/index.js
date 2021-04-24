@@ -7,6 +7,7 @@ import {Button} from "primereact/button";
 import styled from "styled-components";
 import {Password} from "primereact/password";
 import {authenticate} from "../../utils/auth";
+import {Dialog} from "primereact/dialog";
 
 const Wrapper = styled.div`
     height: 350px;

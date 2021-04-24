@@ -10,7 +10,6 @@ import axios from "axios";
 import styled from "styled-components";
 import {getCookie} from "../../utils/cookie";
 import {Dropdown} from "primereact/dropdown";
-import userEvent from "@testing-library/user-event";
 
 const Wrapper = styled.div`
     height: 500px;

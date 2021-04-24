@@ -4,11 +4,24 @@ import {Card} from "primereact/card";
 import {Button} from "primereact/button";
 import styled from "styled-components";
 
+const StyledImage = styled.img`
+    margin-top: 50%;
+`;
+
 const StyledCard = styled(Card)`
     display: flex;
     justify-content: space-between;
     width: 90%;
     margin: 20px auto;
+    
+     @media screen and (max-width: 500px) {
+        
+        ${StyledImage} {
+            margin-top: 0;
+        }
+        
+        flex-flow: column wrap;
+    }
 `;
 
 const ArticlePreviewCard = ({ id, title, description, imageUrl }) => {
@@ -27,7 +40,7 @@ const ArticlePreviewCard = ({ id, title, description, imageUrl }) => {
     const renderHeader = (imageUrl) => {
 
         return (
-            <img alt="Card" src={imageUrl} style={{marginTop: "50%"}}
+            <StyledImage alt="Card" src={imageUrl}
                  onError={(e) =>
                      e.target.src='https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} />
         )

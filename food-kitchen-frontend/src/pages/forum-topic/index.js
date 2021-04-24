@@ -13,7 +13,17 @@ const Wrapper = styled.div`
     display: flex;
     flex-flow: column wrap;
     align-content: center;
+    
+    @media screen and (max-width: 600px) {
+       display: block;
+    }
 `;
+
+const StyledComment = styled.div`
+    display: flex;
+    justify-content: space-between;
+`;
+
 const ForumTopicPage = () => {
 
     const [comments, setComments] = useState([]);
@@ -76,7 +86,7 @@ const ForumTopicPage = () => {
 
                        return (
 
-                            <div key={index} style={{display: "flex"}}>
+                            <StyledComment key={index}>
 
                                 <div style={{margin: "20px"}}>
                                     <AvatarComponent image={avatarImageUrl}/>
@@ -91,26 +101,27 @@ const ForumTopicPage = () => {
                                         value={c.content}
                                         autoResize />
                                 </div>
-                            </div>
+                            </StyledComment>
                         )
                     }) : null
                 }
 
-                <div style={{display: "flex"}}>
-
+                <StyledComment>
                     <div style={{margin: "20px"}}>
                         <AvatarComponent image={avatarImageUrl}/>
                         <span>You</span>
                     </div>
 
-                    <InputTextarea
-                        rows={3}
-                        cols={70}
-                        placeholder="Add comment ..."
-                        value={personalComment}
-                        onChange={(e) => setPersonalComment(e.target.value)}
-                        autoResize />
-                </div>
+                    <div style={{margin: "20px"}}>
+                        <InputTextarea
+                            rows={3}
+                            cols={70}
+                            placeholder="Add comment ..."
+                            value={personalComment}
+                            onChange={(e) => setPersonalComment(e.target.value)}
+                            autoResize />
+                    </div>
+                </StyledComment>
 
                 <Button label="Add comment" style={{marginTop: "20px"}} onClick={handleSubmit}/>
             </Wrapper>

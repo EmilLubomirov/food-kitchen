@@ -19,6 +19,10 @@ const StyledAddBtn = styled(Button)`
     width: 20%;
     height: 50px;
     margin: 20px;
+    
+     @media screen and (max-width: 400px) {
+        width: auto;
+    }
 `;
 
 const ArticlePage = () => {

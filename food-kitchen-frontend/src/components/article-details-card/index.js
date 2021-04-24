@@ -10,9 +10,11 @@ const Wrapper = styled.div`
 
 const StyledP = styled.p`
     line-height: 1.5;
-    font-style: italic;
     font-size: 18px;
-    font-weight: bolder;
+    
+     @media screen and (max-width: 400px) {
+        font-size: 14px;
+    }
 `;
 
 const ArticleDetailsCard = ({article}) => {
@@ -31,8 +33,10 @@ const ArticleDetailsCard = ({article}) => {
                   subTitle={`Published on: ${publishedOn}`}
                   style={{ width: '70%' }}
                   header={header}>
-                <p className="p-m-0" style={{lineHeight: '1.5', fontSize: "18px"}}>{description}</p>
-                <StyledP className="p-m-0">Published by: Admin</StyledP>
+                <div>
+                    <StyledP className="p-m-0">{description}</StyledP>
+                    <StyledP style={{fontStyle: "italic", fontWeight: "bolder"}} className="p-m-0">Published by: Admin</StyledP>
+                </div>
             </Card>
         </Wrapper>
     )

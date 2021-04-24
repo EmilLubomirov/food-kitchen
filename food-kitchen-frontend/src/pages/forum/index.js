@@ -16,6 +16,14 @@ const Wrapper = styled.div`
    align-items: center;
 `;
 
+const StyledPanelMenu = styled(PanelMenu)`
+    width: 44rem;
+    
+     @media screen and (max-width: 700px) {
+        width: 100%;
+    }
+`;
+
 const ForumPage = () => {
 
     const [categories, setCategories] = useState([]);
@@ -101,7 +109,7 @@ const ForumPage = () => {
         <PageLayout>
             <Wrapper className="card">
                 <h1 style={{margin: "50px"}}>Choose category</h1>
-                <PanelMenu model={getItems(categories)} style={{ width: '44rem' }}/>
+                <StyledPanelMenu model={getItems(categories)}/>
 
                 <DialogWindow visible={visibleTopicDialog}
                               header="Add Topic"

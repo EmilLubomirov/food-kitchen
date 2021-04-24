@@ -9,9 +9,32 @@ import {getCookie} from "../../utils/cookie";
 import {Accordion, AccordionTab} from "primereact/accordion";
 import styled from "styled-components";
 
+const StyledImage = styled.img`
+    max-width: 5%;
+    margin: 0 70px;
+`;
+
+const Wrapper = styled.div`
+    
+    display: flex;
+    align-items: center;
+    
+     @media screen and (max-width: 600px) {
+        flex-flow: column;
+        justify-content: space-between;
+        align-items: flex-start;
+        height: 170px;
+        
+        ${StyledImage}{
+            max-width: 15%;
+        }
+    }
+`;
+
 const StyledHeading = styled.h4`
     margin: 0 20px;
 `;
+
 const BookPage = () =>{
 
     const [books, setBooks] = useState([]);
@@ -79,15 +102,13 @@ const BookPage = () =>{
 
         return (
 
-            <div style={{display: "flex", alignItems: "center"}}>
-
-                <img style={{maxWidth: "5%", margin: "0 70px"}}
-                     src={book.imageUrl} alt={book.title}/>
+            <Wrapper>
+                <StyledImage src={book.imageUrl} alt={book.title}/>
 
                 <StyledHeading>Title: {book.title}</StyledHeading>
                 <StyledHeading>Author: {book.author}</StyledHeading>
                 <StyledHeading>Year: {book.year}</StyledHeading>
-            </div>
+            </Wrapper>
 
         )
     };
@@ -129,15 +150,6 @@ const BookPage = () =>{
 
                                     return(  <AccordionTab key={b.id}
                                                            header={renderHeader(b)}>
-                                           {/*<div>*/}
-                                           {/*    <iframe title="coordinates"*/}
-                                           {/*            src={`https://www.google.com/maps/search/?api=1&query=58.698017,-152.522067`}*/}
-                                           {/*            width="600" height="450" style={{maxWidth: "100%"}} frameBorder="0"*/}
-                                           {/*            allowFullScreen=""*/}
-                                           {/*            aria-hidden="false"*/}
-                                           {/*            tabIndex="0">*/}
-                                           {/*    </iframe>*/}
-                                           {/*</div>*/}
                                         <p>{b.description}</p>
                                     </AccordionTab>
                                    )
