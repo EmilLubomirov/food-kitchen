@@ -39,13 +39,13 @@ const ForumPage = () => {
         axios.get('http://localhost:8080/api/forum')
             .then(res => {
                 if (res.status === 200){
-                    setCategories(res.data);
+                    setCategories(res.data._embedded.forumCategoryViewModelList);
                 }
             })
     };
 
     const getItems = () => {
-        return categories.map(c => { return {label: c.title, items: getQuestionItems(c.title, c.topics)}});
+        return categories.map(c => { return {label: c.title, items: getQuestionItems(c.title, c.topics._embedded ? c.topics._embedded.forumTopicServiceModelList : [])}});
     };
 
     const getQuestionItems = (catName, topics) => {

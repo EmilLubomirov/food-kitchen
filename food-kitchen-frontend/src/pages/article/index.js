@@ -40,7 +40,7 @@ const ArticlePage = () => {
             .then(res => {
 
                 if (res.status === 200){
-                    setArticles(res.data);
+                    setArticles(res.data._embedded.articleServiceModelList);
                 }
             })
     };

@@ -13,7 +13,7 @@ public interface RecipeService {
 
     List<RecipeServiceModel> findByCategories(RecipeFilterModel recipe);
 
-    Recipe add(Recipe recipe, String userId);
+    RecipeServiceModel add(Recipe recipe, String userId);
 
     RecipeServiceModel findById(String id);
 

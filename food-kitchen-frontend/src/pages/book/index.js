@@ -53,7 +53,7 @@ const BookPage = () =>{
             .then(res => {
 
                 if (res.status === 200){
-                    setBooks(res.data);
+                    setBooks(res.data._embedded.cookBookServiceModelList);
                 }
             })
     };

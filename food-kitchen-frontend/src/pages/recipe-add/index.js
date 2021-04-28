@@ -57,7 +57,7 @@ const AddRecipePage = () => {
             .then(res => {
 
                 if (res.status === 200){
-                    setFoodCategories(res.data);
+                    setFoodCategories(res.data._embedded.foodCategoryServiceModelList);
                 }
             })
     };

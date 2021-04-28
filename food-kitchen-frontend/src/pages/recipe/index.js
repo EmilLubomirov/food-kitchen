@@ -37,7 +37,7 @@ const RecipePage = () => {
         axios.get('http://localhost:8080/api/recipe')
             .then(res => {
                 if (res.status === 200) {
-                    setRecipes(res.data);
+                    setRecipes(res.data._embedded.recipeServiceModelList);
                 }
             });
     };
@@ -47,7 +47,7 @@ const RecipePage = () => {
         axios.get('http://localhost:8080/api/recipe/category')
             .then(res => {
                 if (res.status === 200) {
-                    setCategories(res.data);
+                    setCategories(res.data._embedded.foodCategoryServiceModelList);
                 }
             });
     };
@@ -74,7 +74,14 @@ const RecipePage = () => {
         })
             .then(res => {
                 if (res.status === 200){
-                    setRecipes(res.data);
+
+                    try {
+                        setRecipes(res.data._embedded.recipeServiceModelList);
+                    }
+
+                    catch(e){
+                        setRecipes([])
+                    }
                 }
             })
 

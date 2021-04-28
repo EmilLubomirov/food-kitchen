@@ -36,6 +36,7 @@ public class RecipeServiceImpl implements RecipeService {
         return recipeRepository.findAll()
                 .stream()
                 .map(r -> modelMapper.map(r, RecipeServiceModel.class))
+                .sorted(Comparator.comparing(RecipeServiceModel::getRating).reversed())
                 .collect(Collectors.toList());
     }
 
@@ -67,7 +68,7 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public Recipe add(Recipe recipe, String userUsername) {
+    public RecipeServiceModel add(Recipe recipe, String userUsername) {
 
         Set<FoodCategory> categories = recipe.getCategories()
                 .stream()
@@ -90,8 +91,7 @@ public class RecipeServiceImpl implements RecipeService {
             user.getRecipes().add(recipe);
         }
 
-        userRepository.saveAndFlush(user);
-        return recipe;
+        return modelMapper.map(userRepository.saveAndFlush(user), RecipeServiceModel.class);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.example.foodkitchen.api.controllers;
 
+import com.example.foodkitchen.api.payroll.UserModelAssembler;
 import com.example.foodkitchen.api.security.JwtProvider;
 import com.example.foodkitchen.api.security.JwtResponse;
 import com.example.foodkitchen.data.entities.User;
@@ -7,6 +8,7 @@ import com.example.foodkitchen.data.models.binding.user.UserRegisterModel;
 import com.example.foodkitchen.data.models.service.UserServiceModel;
 import com.example.foodkitchen.data.services.UserService;
 import org.modelmapper.ModelMapper;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,33 +26,38 @@ public class UserController {
 
     private final AuthenticationManager authenticationManager;
     private final JwtProvider jwtProvider;
+    private final UserModelAssembler userModelAssembler;
 
-    public UserController(UserService userService, ModelMapper modelMapper, AuthenticationManager authenticationManager, JwtProvider jwtProvider) {
+    public UserController(UserService userService, ModelMapper modelMapper, AuthenticationManager authenticationManager, JwtProvider jwtProvider, UserModelAssembler userModelAssembler) {
         this.userService = userService;
         this.modelMapper = modelMapper;
         this.authenticationManager = authenticationManager;
         this.jwtProvider = jwtProvider;
+        this.userModelAssembler = userModelAssembler;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> create(@RequestBody UserRegisterModel userRegisterModel){
+    public ResponseEntity<EntityModel<UserServiceModel>> create(@RequestBody UserRegisterModel userRegisterModel){
+
+        UserServiceModel userServiceModel = modelMapper.map(userRegisterModel, UserServiceModel.class);
+        EntityModel<UserServiceModel> entityModel = userModelAssembler.toModel(userServiceModel);
 
         if (!userRegisterModel.getPassword().equals(userRegisterModel.getConfirmPassword())){
             return ResponseEntity.badRequest()
-                    .body("Passwords do not match!");
+                    .body(entityModel);
         }
 
         if (userService.existsByUsername(userRegisterModel.getUsername())){
             return ResponseEntity.badRequest()
-                    .body("User with such username already exists!");
+                    .body(entityModel);
         }
 
-        userService.register(modelMapper.map(userRegisterModel, UserServiceModel.class));
-        return ResponseEntity.ok().body("User is registered successfully");
+        return ResponseEntity.ok(
+                userModelAssembler.toModel(userService.register(userServiceModel)));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody User user){
+    public ResponseEntity<EntityModel<JwtResponse>> login(@RequestBody User user){
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
@@ -58,45 +65,42 @@ public class UserController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String jwt = jwtProvider.generateJwtToken(authentication);
-//        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
         User userDetails = (User) authentication.getPrincipal();
 
-        return ResponseEntity.ok(new JwtResponse(jwt,
+        return ResponseEntity.ok(EntityModel.of(new JwtResponse(jwt,
                 userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getAuthorities(),
-                userDetails.getAvatarImageUrl()));
+                userDetails.getAvatarImageUrl())));
     }
 
     @PostMapping("/verifyLogin")
-    public Object verifyLogin(@RequestHeader String authorization){
-
-        Object userDetails = jwtProvider.getUserDetails(authorization);
-        return jwtProvider.getUserDetails(authorization);
+    public ResponseEntity<EntityModel<Object>> verifyLogin(@RequestHeader String authorization){
+        return ResponseEntity.ok(EntityModel.of(jwtProvider.getUserDetails(authorization)));
     }
 
     @PatchMapping("/edit/username")
-    public ResponseEntity<?> updateUsername(@RequestParam String updateUsername,
+    public ResponseEntity<EntityModel<UserServiceModel>> updateUsername(@RequestParam String updateUsername,
                                     @AuthenticationPrincipal User principal){
 
         UserServiceModel userServiceModel = userService.editUserUsername(principal.getUsername(), updateUsername);
-        return ResponseEntity.ok().body(userServiceModel);
+        return ResponseEntity.ok(userModelAssembler.toModel(userServiceModel));
     }
 
     @PatchMapping("/edit/password")
-    public ResponseEntity<?> updatePassword(@RequestParam String updatePassword,
+    public ResponseEntity<EntityModel<UserServiceModel>> updatePassword(@RequestParam String updatePassword,
                                     @AuthenticationPrincipal User principal) {
 
         UserServiceModel userServiceModel = userService.editUserPassword(principal.getUsername(), updatePassword);
-        return ResponseEntity.ok().body(userServiceModel);
+        return ResponseEntity.ok(userModelAssembler.toModel(userServiceModel));
     }
 
     @PatchMapping("/edit/profilePicture")
-    public ResponseEntity<?> updateProfilePicture(@RequestParam String updateAvatarImageUrl,
+    public ResponseEntity<EntityModel<UserServiceModel>> updateProfilePicture(@RequestParam String updateAvatarImageUrl,
                                             @AuthenticationPrincipal User principal) {
 
         UserServiceModel userServiceModel = userService.editUserProfilePicture(principal.getUsername(), updateAvatarImageUrl);
-        return ResponseEntity.ok().body(userServiceModel);
+        return ResponseEntity.ok(userModelAssembler.toModel(userServiceModel));
     }
 }

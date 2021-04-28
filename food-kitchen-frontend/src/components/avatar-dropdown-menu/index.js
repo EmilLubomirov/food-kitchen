@@ -55,7 +55,15 @@ const AvatarDropdownMenu = ({menu, handleLogout}) => {
         axios.get(url, { headers })
             .then(res => {
                 if (res.status === 200){
-                    setFavRecipes(res.data);
+
+                    try {
+                        setFavRecipes(res.data._embedded.recipeServiceModelList);
+                    }
+
+                    catch(e){
+                        setFavRecipes([]);
+                    }
+
                     setFavListVisible(true);
                 }
             })
