@@ -1,10 +1,12 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useCallback, useContext, useEffect, useRef, useState} from "react";
 import {Card} from "primereact/card";
 import styled from "styled-components";
 import {Rating} from "primereact/rating";
 import axios from "axios";
 import {getCookie} from "../../utils/cookie";
 import AuthContext from "../../AuthContext";
+import {Toast} from "primereact/toast";
+import { MESSAGE_TYPES, MESSAGES } from "../../utils/constants";
 
 const Wrapper = styled.div`
     display: flex;
@@ -31,6 +33,8 @@ const RecipeDetailsCard = ({recipe}) => {
 
     const { id, title, imageUrl, description, publisher, voters, fans } = recipe;
     const context = useContext(AuthContext);
+
+    const toast = useRef(null);
 
     const handleRatingChange = (e) => {
 
@@ -65,9 +69,20 @@ const RecipeDetailsCard = ({recipe}) => {
 
                 if (res.status === 200){
                     setFavVisible(false);
+                    showMessage(MESSAGE_TYPES.success, MESSAGES.addedToFav)
                 }
             });
     };
+
+    const showMessage = useCallback((type, value) => {
+
+        if (toast.current){
+            toast.current.show({
+                severity: type,
+                summary: value,
+            })
+        }
+    },[]);
 
     const renderTitle = (
 
@@ -124,6 +139,8 @@ const RecipeDetailsCard = ({recipe}) => {
                 <p className="p-m-0" style={{lineHeight: '1.5'}}>{description}</p>
                 <p className="p-m-0" style={{lineHeight: '1.5'}}>Published by: {publisher}</p>
             </Card>
+
+            <Toast ref={toast} position="bottom-right"/>
         </Wrapper>
     )
 

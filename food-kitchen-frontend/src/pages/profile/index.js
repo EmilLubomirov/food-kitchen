@@ -9,6 +9,7 @@ import axios from "axios";
 import {getCookie} from "../../utils/cookie";
 import {Password} from "primereact/password";
 import {beginUpload} from "../../utils/cloudinaryService";
+import { MESSAGE_TYPES, MESSAGES } from "../../utils/constants";
 
 const Wrapper = styled.div`
     height: 450px;
@@ -48,7 +49,11 @@ const ProfilePage = () => {
 
                     context.logout();
                     document.cookie = "auth-token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                    history.push('/login');
+
+                    history.push('/login', {
+                        message: MESSAGES.profileChangesSuccess,
+                        type: MESSAGE_TYPES.success
+                    });
                 }
             })
     };

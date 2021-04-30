@@ -5,6 +5,7 @@ import LinkComponent, {StyledLink} from "../../components/link";
 import AuthContext from "../../AuthContext";
 import styled from 'styled-components';
 import AvatarComponent from "../avatar";
+import {MESSAGE_TYPES, MESSAGES} from "../../utils/constants";
 
 const Wrapper = styled.div`
     height: 70px;
@@ -34,7 +35,10 @@ const Header = () => {
         context.logout();
         document.cookie = "auth-token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 
-        history.push('/login');
+        history.push('/login', {
+            message: MESSAGES.logoutSuccess,
+            type: MESSAGE_TYPES.success
+        });
     };
 
     return (

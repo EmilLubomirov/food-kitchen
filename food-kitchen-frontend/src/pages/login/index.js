@@ -1,4 +1,5 @@
-import React, {useContext, useState} from "react";
+import React, {useCallback, useContext, useEffect, useRef, useState} from "react";
+import {useLocation} from "react-router-dom";
 import AuthContext from "../../AuthContext";
 import {useHistory} from "react-router-dom";
 import PageLayout from "../../components/page-layout";
@@ -7,7 +8,8 @@ import {Button} from "primereact/button";
 import styled from "styled-components";
 import {Password} from "primereact/password";
 import {authenticate} from "../../utils/auth";
-import {Dialog} from "primereact/dialog";
+import  { MESSAGES, MESSAGE_TYPES } from "../../utils/constants";
+import {Toast} from "primereact/toast";
 
 const Wrapper = styled.div`
     height: 350px;
@@ -22,12 +24,24 @@ const LoginPage = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
+    const toast = useRef(null);
+
+    const location = useLocation();
+    const { state } = location;
+
+    const [message, ] = useState({
+        isOpen: state ? !!state.message : false,
+        value: state ? state.message || "" : "",
+        type: state ? state.type || "" : ""
+    });
+
     const context = useContext(AuthContext);
     const history = useHistory();
 
     const handleSubmit = () => {
 
         if (username === '' || password === ''){
+            showMessage(MESSAGE_TYPES.error, MESSAGES.emptyUsernameOrPassword);
             return;
         }
 
@@ -51,11 +65,32 @@ const LoginPage = () => {
                 avatarImageUrl,
             });
 
-            history.push('/recipe');
+            history.push('/recipe', {
+                message: MESSAGES.successfulLogin,
+                type: MESSAGE_TYPES.success
+            });
         }, (e) => {
-            console.error(e);
+            showMessage(MESSAGE_TYPES.error, MESSAGES.unsuccessfulLogin);
         })
     };
+
+    const showMessage = useCallback((type, value) => {
+
+        if (toast.current){
+            toast.current.show({
+                severity: type,
+                summary: value,
+            })
+        }
+    },[]);
+
+    useEffect(() => {
+
+        if (message.isOpen){
+            showMessage(message.type, message.value);
+        }
+
+    }, [message, showMessage]);
 
     return (
         <PageLayout>
@@ -72,6 +107,8 @@ const LoginPage = () => {
                 </span>
 
                 <Button onClick={handleSubmit} label="Login"/>
+
+                <Toast ref={toast} position="bottom-right"/>
             </Wrapper>
         </PageLayout>
     )

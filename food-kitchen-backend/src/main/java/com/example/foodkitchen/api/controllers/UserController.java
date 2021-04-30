@@ -9,10 +9,13 @@ import com.example.foodkitchen.data.models.service.UserServiceModel;
 import com.example.foodkitchen.data.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -57,22 +60,28 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<EntityModel<JwtResponse>> login(@RequestBody User user){
+    public ResponseEntity<?> login(@RequestBody User user){
 
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        String jwt = jwtProvider.generateJwtToken(authentication);
+            String jwt = jwtProvider.generateJwtToken(authentication);
 
-        User userDetails = (User) authentication.getPrincipal();
+            User userDetails = (User) authentication.getPrincipal();
 
-        return ResponseEntity.ok(EntityModel.of(new JwtResponse(jwt,
-                userDetails.getId(),
-                userDetails.getUsername(),
-                userDetails.getAuthorities(),
-                userDetails.getAvatarImageUrl())));
+            return ResponseEntity.ok(EntityModel.of(new JwtResponse(jwt,
+                    userDetails.getId(),
+                    userDetails.getUsername(),
+                    userDetails.getAuthorities(),
+                    userDetails.getAvatarImageUrl())));
+        }
+
+        catch (AuthenticationException e){
+            return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
+        }
     }
 
     @PostMapping("/verifyLogin")

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import {useHistory} from "react-router-dom";
 import {PanelMenu} from "primereact/panelmenu";
 import PageLayout from "../../components/page-layout";
@@ -9,6 +9,8 @@ import DialogWindow from "../../components/dialog";
 import ForumAddTopicForm from "../../components/forum-add-topic-form";
 import {getCookie} from "../../utils/cookie";
 import LinkComponent from "../../components/link";
+import {Toast} from "primereact/toast";
+import { MESSAGE_TYPES, MESSAGES } from "../../utils/constants";
 
 const Wrapper = styled.div`
    display: flex;
@@ -34,6 +36,8 @@ const ForumPage = () => {
 
     const history = useHistory();
 
+    const toast = useRef(null);
+
     const getForumCategories = () => {
 
         axios.get('http://localhost:8080/api/forum')
@@ -45,7 +49,9 @@ const ForumPage = () => {
     };
 
     const getItems = () => {
-        return categories.map(c => { return {label: c.title, items: getQuestionItems(c.title, c.topics._embedded ? c.topics._embedded.forumTopicServiceModelList : [])}});
+        return categories.map(c => { return {
+            label: c.title,
+            items: getQuestionItems(c.title, c.topics._embedded ? c.topics._embedded.forumTopicServiceModelList : [])}});
     };
 
     const getQuestionItems = (catName, topics) => {
@@ -56,6 +62,16 @@ const ForumPage = () => {
 
         return arr;
     };
+
+    const showMessage = useCallback((type, value) => {
+
+        if (toast.current){
+            toast.current.show({
+                severity: type,
+                summary: value,
+            })
+        }
+    },[]);
 
     const handleSubmit = (catName) => {
 
@@ -74,6 +90,11 @@ const ForumPage = () => {
     };
 
     const handleSave = () => {
+
+        if (topicName.trim().length === 0 || question.trim().length === 0){
+            showMessage(MESSAGE_TYPES.error, MESSAGES.emptyFields);
+            return;
+        }
 
         const url = 'http://localhost:8080/api/forum/addTopic';
 
@@ -124,6 +145,7 @@ const ForumPage = () => {
                                        question={question}
                                        setQuestion={setQuestion}/>
 
+                    <Toast ref={toast} position="bottom-right"/>
                 </DialogWindow>
             </Wrapper>
         </PageLayout>
