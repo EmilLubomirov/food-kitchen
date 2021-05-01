@@ -47,7 +47,14 @@ public class ForumCategoryServiceImpl implements ForumCategoryService {
 
     @Override
     public ForumCategoryServiceModel findByTitle(String title) {
-        return modelMapper.map(forumCategoryRepository.findByTitle(title), ForumCategoryServiceModel.class);
+
+        ForumCategory category = forumCategoryRepository.findByTitle(title);
+
+        if (category == null){
+            return null;
+        }
+
+        return modelMapper.map(category, ForumCategoryServiceModel.class);
     }
 
     @Override

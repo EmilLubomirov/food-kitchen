@@ -37,6 +37,11 @@ public class UserServiceImpl implements UserService {
 
         User user = modelMapper.map(userServiceModel, User.class);
 
+        if (user.getUsername() == null || user.getPassword() == null ||
+            user.getUsername().trim().isEmpty() || user.getPassword().trim().isEmpty()){
+            return userServiceModel;
+        }
+
         if (userRepository.count() == 0){
 
             roleService.seedRolesInDB();
@@ -68,6 +73,10 @@ public class UserServiceImpl implements UserService {
 
         User user = userRepository.findByUsername(userUsername);
 
+        if (user == null){
+            return null;
+        }
+
         if (user.getRecipes() == null){
             user.setRecipes(new HashSet<>(Set.of(recipe)));
         }
@@ -86,7 +95,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserServiceModel findByUsername(String username) {
-        return modelMapper.map(userRepository.findByUsername(username), UserServiceModel.class);
+
+        User user = userRepository.findByUsername(username);
+
+        if (user == null){
+            return null;
+        }
+
+        return modelMapper.map(user, UserServiceModel.class);
     }
 
     @Override
@@ -95,9 +111,13 @@ public class UserServiceImpl implements UserService {
                                      String principalPass,
                                      String oldPass, String updatePass) {
 
-        boolean matches = passwordEncoder.matches(oldPass, principalPass);
-
         User user = userRepository.findByUsername(oldUsername);
+
+        if (user == null){
+            return null;
+        }
+
+        boolean matches = passwordEncoder.matches(oldPass, principalPass);
 
         if (matches){
             user.setUsername(updateUsername);
@@ -111,6 +131,11 @@ public class UserServiceImpl implements UserService {
     public UserServiceModel editUserUsername(String oldUsername, String updateUsername) {
 
         User user = userRepository.findByUsername(oldUsername);
+
+        if (user == null){
+            return null;
+        }
+
         user.setUsername(updateUsername);
         return modelMapper.map(userRepository.saveAndFlush(user), UserServiceModel.class);
     }
@@ -119,6 +144,11 @@ public class UserServiceImpl implements UserService {
     public UserServiceModel editUserPassword(String username, String updatePassword) {
 
         User user = userRepository.findByUsername(username);
+
+        if (user == null){
+            return null;
+        }
+
         user.setPassword(passwordEncoder.encode(updatePassword));
         return modelMapper.map(userRepository.saveAndFlush(user), UserServiceModel.class);
     }
@@ -127,6 +157,11 @@ public class UserServiceImpl implements UserService {
     public UserServiceModel editUserProfilePicture(String username, String updateAvatarImageUrl) {
 
         User user = userRepository.findByUsername(username);
+
+        if (user == null){
+            return null;
+        }
+
         user.setAvatarImageUrl(updateAvatarImageUrl);
         return modelMapper.map(userRepository.saveAndFlush(user), UserServiceModel.class);
     }
