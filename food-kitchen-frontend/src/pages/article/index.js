@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from "react"
+import React, {useCallback, useContext, useEffect, useRef, useState} from "react"
 import PageLayout from "../../components/page-layout";
 import axios from "axios";
 import AuthContext from "../../AuthContext";
@@ -8,6 +8,8 @@ import {getCookie} from "../../utils/cookie";
 import AddArticleForm from "../../components/add-article-form";
 import styled from "styled-components";
 import ArticlePreviewCard from "../../components/article-preview-card";
+import {Toast} from "primereact/toast";
+import {MESSAGE_TYPES, MESSAGES} from "../../utils/constants";
 
 const Wrapper = styled.div`
     display: flex;
@@ -33,6 +35,9 @@ const ArticlePage = () => {
     const [articleImageUrl, setArticleImageUrl] = useState('');
     const [visible, setVisible] = useState(false);
     const context = useContext(AuthContext);
+
+    const toast = useRef(null);
+    const formToast = useRef(null);
 
     const getArticles = () => {
 
@@ -62,6 +67,11 @@ const ArticlePage = () => {
 
     const handleSave = () => {
 
+        if (title.trim().length === 0 || description.trim().length === 0){
+            showMessage(formToast, MESSAGE_TYPES.error, MESSAGES.emptyFields);
+            return;
+        }
+
         const url = `http://localhost:8080/api/article`;
 
         const body = {
@@ -79,9 +89,23 @@ const ArticlePage = () => {
                 if (res.status === 201){
                     getArticles();
                     setVisible(false);
+                    showMessage(toast, MESSAGE_TYPES.success, MESSAGES.addedArticle)
                 }
-            })
+            }).catch(() => {
+            showMessage(formToast, MESSAGE_TYPES.error, MESSAGES.invalidFieldData)
+        });
     };
+
+    const showMessage = useCallback((toast, type, value) => {
+
+        if (toast.current){
+
+            toast.current.show({
+                severity: type,
+                summary: value,
+            })
+        }
+    },[]);
 
     useEffect(() => {
         getArticles();
@@ -102,6 +126,7 @@ const ArticlePage = () => {
                                     description={description} setDescription={setDescription}
                                     setArticleImageUrl={setArticleImageUrl}/>
 
+                    <Toast ref={formToast} position="bottom-right"/>
                 </DialogWindow>
 
                 {
@@ -125,6 +150,8 @@ const ArticlePage = () => {
                             <StyledAddBtn label="Add Article" onClick={handleSubmit}/>
                         ) : null : null
                 }
+
+                <Toast ref={toast} position="bottom-right"/>
             </Wrapper>
 
         </PageLayout>

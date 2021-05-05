@@ -8,8 +8,12 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,8 +46,9 @@ public class BookController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('ADMIN')")
-    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<EntityModel<CookBookServiceModel>> add(@RequestBody CookBookServiceModel model){
-        return ResponseEntity.ok(bookModelAssembler.toModel(cookBookService.add(model)));
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(bookModelAssembler.toModel(cookBookService.add(model)));
     }
 }

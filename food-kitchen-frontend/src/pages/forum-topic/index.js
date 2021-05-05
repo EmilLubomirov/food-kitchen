@@ -50,6 +50,10 @@ const ForumTopicPage = () => {
 
     const handleSubmit = () => {
 
+        if (personalComment.trim().length === 0){
+            return;
+        }
+
         const url = `http://localhost:8080/api/forum/${topicId}/addComment`;
 
         const headers =  { 'Content-Type': 'application/json',
@@ -123,7 +127,8 @@ const ForumTopicPage = () => {
                     </div>
                 </StyledComment>
 
-                <Button label="Add comment" style={{marginTop: "20px"}} onClick={handleSubmit}/>
+                <Button label="Add comment" style={{marginTop: "20px"}}
+                        onClick={handleSubmit}/>
             </Wrapper>
         </PageLayout>
     )

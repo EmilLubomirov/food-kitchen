@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useCallback, useContext, useEffect, useRef, useState} from "react";
 import axios from "axios";
 import PageLayout from "../../components/page-layout";
 import AuthContext from "../../AuthContext";
@@ -8,6 +8,8 @@ import AddBookForm from "../../components/add-book-form";
 import {getCookie} from "../../utils/cookie";
 import {Accordion, AccordionTab} from "primereact/accordion";
 import styled from "styled-components";
+import {Toast} from "primereact/toast";
+import {MESSAGE_TYPES, MESSAGES} from "../../utils/constants";
 
 const StyledImage = styled.img`
     max-width: 5%;
@@ -47,6 +49,9 @@ const BookPage = () =>{
 
     const context = useContext(AuthContext);
 
+    const toast = useRef(null);
+    const formToast = useRef(null);
+
     const getBooks = () => {
 
         axios.get('http://localhost:8080/api/book')
@@ -75,6 +80,15 @@ const BookPage = () =>{
 
     const handleSave = () => {
 
+        if (title.trim().length === 0 ||
+            author.trim().length === 0 ||
+            year.trim().length === 0 ||
+            description.trim().length === 0){
+
+            showMessage(formToast, MESSAGE_TYPES.error, MESSAGES.emptyFields);
+            return;
+        }
+
         const url = `http://localhost:8080/api/book`;
 
         const body = {
@@ -94,9 +108,23 @@ const BookPage = () =>{
                 if (res.status === 201){
                     getBooks();
                     setVisible(false);
+                    showMessage(toast, MESSAGE_TYPES.success, MESSAGES.addedBook);
                 }
-        })
+            }).catch(() => {
+            showMessage(formToast, MESSAGE_TYPES.error, MESSAGES.invalidFieldData)
+        });
     };
+
+    const showMessage = useCallback((toast, type, value) => {
+
+        if (toast.current){
+
+            toast.current.show({
+                severity: type,
+                summary: value,
+            })
+        }
+    },[]);
 
     const renderHeader = (book) => {
 
@@ -132,6 +160,8 @@ const BookPage = () =>{
                              description={description} setDescription={setDescription}
                              setBookImageUrl={setBookImageUrl}/>
 
+                <Toast ref={formToast} position="bottom-right"/>
+
             </DialogWindow>
 
             <h1>Cook Books you should read</h1>
@@ -165,6 +195,9 @@ const BookPage = () =>{
                                                     onClick={handleSubmit}/>) : null
                     : null
             }
+
+            <Toast ref={toast} position="bottom-right"/>
+
         </PageLayout>
     )
 };

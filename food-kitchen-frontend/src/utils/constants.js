@@ -6,7 +6,10 @@ const MESSAGES = {
     logoutSuccess: "Logout success",
     addedToFav: "Added to favorites",
     profileChangesSuccess: "Changes saved successfully",
-    emptyFields: "Some fields are empty"
+    emptyFields: "Some fields are empty",
+    invalidFieldData: "Incorrect field data",
+    addedBook: "Book added successfully",
+    addedArticle: "Article added successfully"
 };
 
 const MESSAGE_TYPES = {
