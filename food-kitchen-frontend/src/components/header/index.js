@@ -9,7 +9,7 @@ import {MESSAGE_TYPES, MESSAGES} from "../../utils/constants";
 
 const Wrapper = styled.div`
     height: 70px;
-    background-color: lightgray;
+    background-color: #deb887e3;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -30,9 +30,10 @@ const Header = () => {
     const navigation = getNavigation(context.user);
     const history = useHistory();
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
 
-        context.logout();
+        await context.logout();
+
         document.cookie = "auth-token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         sessionStorage.removeItem("chosenCategories");
         sessionStorage.removeItem("recipeLimit");
@@ -57,7 +58,7 @@ const Header = () => {
                 <>
                     <AvatarComponent image={
                         context.user.avatarImageUrl ? context.user.avatarImageUrl :
-                        "https://png.pngtree.com/element_our/20200610/ourmid/pngtree-character-default-avatar-image_2237203.jpg"}
+                        "https://icon-library.com/images/default-user-icon/default-user-icon-13.jpg"}
                         handleLogout={handleLogout}/>
                         </>
             ) : null}

@@ -8,6 +8,7 @@ import {Button} from "primereact/button";
 import styled from "styled-components";
 import AuthContext from "../../AuthContext";
 import {getCookie} from "../../utils/cookie";
+import AvatarComment from "../../components/avatar-comment";
 
 const Wrapper = styled.div`
     display: flex;
@@ -29,6 +30,7 @@ const ForumTopicPage = () => {
     const [comments, setComments] = useState([]);
     const [topicTitle, setTopicTitle] = useState('');
     const [personalComment, setPersonalComment] = useState('');
+    const [isLoading, setLoading] = useState(true);
 
     const { topicId } = useParams();
     const context = useContext(AuthContext);
@@ -73,6 +75,14 @@ const ForumTopicPage = () => {
             })
     };
 
+    useEffect(() =>{
+
+        if (comments.length > 0){
+            setLoading(false);
+        }
+
+    }, [comments]);
+
     useEffect(() => {
         getTopicComments();
     }, [getTopicComments]);
@@ -84,7 +94,9 @@ const ForumTopicPage = () => {
                 <h1>{topicTitle}</h1>
 
                 {
-                   comments.length > 0 ? comments.map((c, index) => {
+                   isLoading ? <div style={{height: "500px"}}/> :
+
+                       comments.map((c, index) => {
 
                         const { avatarImageUrl, username } = c.initiator;
 
@@ -93,7 +105,7 @@ const ForumTopicPage = () => {
                             <StyledComment key={index}>
 
                                 <div style={{margin: "20px"}}>
-                                    <AvatarComponent image={avatarImageUrl}/>
+                                    <AvatarComment image={avatarImageUrl}/>
                                     <span>{username === context.user.username ? 'You' : username}</span>
                                 </div>
 
@@ -107,12 +119,12 @@ const ForumTopicPage = () => {
                                 </div>
                             </StyledComment>
                         )
-                    }) : null
+                    })
                 }
 
                 <StyledComment>
                     <div style={{margin: "20px"}}>
-                        <AvatarComponent image={avatarImageUrl}/>
+                        <AvatarComment image={avatarImageUrl}/>
                         <span>You</span>
                     </div>
 

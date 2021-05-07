@@ -20,7 +20,7 @@ const App = (props) => {
                 user: { ...user, isLoggedIn: true},
             });
         },
-        logout: () =>{
+        logout: async () =>{
             setState({
                 ...state,
                 user: null,

@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
-import  {useLocation} from "react-router-dom";
+import  {useLocation, useHistory} from "react-router-dom";
 import PageLayout from "../../components/page-layout";
 import axios from "axios";
 import RecipeCards from "../../components/recipe-cards";
@@ -47,12 +47,15 @@ const RecipePage = () => {
     const [chosenCategories, setChosenCategories] = useState(
         JSON.parse(sessionStorage.getItem("chosenCategories")) || []);
 
+    const [isLoading, setLoading] = useState(true);
+
     const toast = useRef(null);
 
+    const history = useHistory();
     const location = useLocation();
     const { state } = location;
 
-    const [message, setMessage] = useState({
+    const [message, ] = useState({
         isOpen: state ? !!state.message : false,
         value: state ? state.message || "" : "",
         type: state ? state.type || "" : ""
@@ -145,25 +148,38 @@ const RecipePage = () => {
 
     useEffect(() => {
 
-        if (recipes.length > 0){
+        if (!isLoading){
             handleScrollPosition();
+        }
+    });
+
+    useEffect(() => {
+
+        if (recipes.length > 0){
+            setLoading(false);
         }
 
     }, [recipes]);
 
+    const updateLocationState = useCallback(() => {
+
+        let { state } = location;
+        delete state.message;
+        delete state.type;
+
+        history.replace({ ...history.location, state });
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     useEffect(() => {
 
         if (message.isOpen){
-            setMessage({
-                isOpen: false,
-                type: '',
-                value: ''
-            });
-
             showMessage();
+            updateLocationState();
         }
 
-    }, [message, showMessage]);
+    }, [message, showMessage, updateLocationState]);
 
     return (
         <PageLayout>
@@ -187,8 +203,16 @@ const RecipePage = () => {
                 }
             </FilterWrapper>
 
-            <RecipeCards recipes={recipes}/>
-            <StyledLoadBtn label="Load more" onClick={handleClick}/>
+            {
+                isLoading ? <div style={{height: "500px"}}/> :
+                    (
+                        <>
+                            <RecipeCards recipes={recipes}/>
+                            <StyledLoadBtn label="Load more" onClick={handleClick}/>
+                        </>
+                    )
+            }
+
             <ScrollTopComponent threshold={700}/>
 
             <Toast ref={toast} position="bottom-right"/>

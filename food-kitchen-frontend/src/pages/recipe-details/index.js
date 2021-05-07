@@ -7,6 +7,7 @@ import RecipeDetailsCard from "../../components/recipe-details-card";
 const RecipeDetailsPage = () => {
 
     const [recipe, setRecipe] = useState(null);
+    const [isLoading, setLoading] = useState(true);
 
     const params = useParams();
 
@@ -25,13 +26,21 @@ const RecipeDetailsPage = () => {
     }, [params.recipeId]);
 
     useEffect(() => {
+
+        if (recipe){
+            setLoading(false);
+        }
+    }, [recipe]);
+
+    useEffect(() => {
         getRecipe();
     }, [getRecipe]);
 
     return (
       <PageLayout>
           <div>
-              {recipe ? (<RecipeDetailsCard recipe={recipe}/>) : null}
+              {isLoading ? <div style={{height: "450px"}}/> :
+                  (<RecipeDetailsCard recipe={recipe}/>)}
           </div>
       </PageLayout>
     );

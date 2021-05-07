@@ -7,6 +7,7 @@ import axios from "axios";
 const ArticleDetailsPage = () => {
 
     const [article, setArticle] = useState(null);
+    const [isLoading, setLoading] = useState(true);
 
     const params = useParams();
 
@@ -24,14 +25,21 @@ const ArticleDetailsPage = () => {
     }, [params.articleId]);
 
     useEffect(() => {
+
+        if (article){
+            setLoading(false);
+        }
+    }, [article]);
+
+    useEffect(() => {
         getArticle();
     }, [getArticle]);
 
     return (
         <PageLayout>
             {
-                article ?
-                    <ArticleDetailsCard article={article}/> : null
+                isLoading ? <div style={{height: "500px"}}/> :
+                    <ArticleDetailsCard article={article}/>
             }
         </PageLayout>
     )

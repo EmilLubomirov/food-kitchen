@@ -46,6 +46,7 @@ const BookPage = () =>{
     const [description, setDescription] = useState('');
     const [bookImageUrl, setBookImageUrl] = useState('');
     const [visible, setVisible] = useState(false);
+    const [isLoading, setLoading] = useState(true);
 
     const context = useContext(AuthContext);
 
@@ -142,6 +143,13 @@ const BookPage = () =>{
     };
 
     useEffect(() => {
+
+        if (books.length > 0){
+            setLoading(false);
+        }
+    }, [books]);
+
+    useEffect(() => {
         getBooks();
     }, []);
 
@@ -166,35 +174,34 @@ const BookPage = () =>{
 
             <h1>Cook Books you should read</h1>
             {
-                (books.length === 0 ?
-                    (<div>
-                        <h3>No cookbooks found</h3>
-                    </div>)
-
+                (isLoading ?
+                    (<div style={{height: "500px"}}/>)
                     :
                     (
-                        <Accordion activeIndex={[0]}>
+                        <>
+                            <Accordion activeIndex={[0]}>
+
+                                {
+                                    books.map(b => {
+
+                                        return(  <AccordionTab key={b.id}
+                                                               header={renderHeader(b)}>
+                                                <p>{b.description}</p>
+                                            </AccordionTab>
+                                        )
+                                    })
+                                }
+                            </Accordion>
 
                             {
-                                books.map(b => {
-
-                                    return(  <AccordionTab key={b.id}
-                                                           header={renderHeader(b)}>
-                                        <p>{b.description}</p>
-                                    </AccordionTab>
-                                   )
-                                })
+                                context.user ?
+                                    context.user.isAdmin ? (<Button label="Add book"
+                                                                    icon="pi pi-plus"
+                                                                    onClick={handleSubmit}/>) : null
+                                    : null
                             }
-                        </Accordion>
+                        </>
                     ))
-            }
-
-            {
-                context.user ?
-                    context.user.isAdmin ? (<Button label="Add book"
-                                                    icon="pi pi-plus"
-                                                    onClick={handleSubmit}/>) : null
-                    : null
             }
 
             <Toast ref={toast} position="bottom-right"/>

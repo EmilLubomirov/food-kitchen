@@ -31,7 +31,7 @@ const LoginPage = () => {
     const location = useLocation();
     const { state } = location;
 
-    const [message, ] = useState({
+    const [message, setMessage] = useState({
         isOpen: state ? !!state.message : false,
         value: state ? state.message || "" : "",
         type: state ? state.type || "" : ""
@@ -48,6 +48,7 @@ const LoginPage = () => {
         }
 
         const url = 'http://localhost:8080/api/user/login';
+
         const body = {
             username,
             password
@@ -94,6 +95,18 @@ const LoginPage = () => {
 
     }, [message, showMessage]);
 
+    useEffect(() => {
+
+        if (state && !message.isOpen){
+
+            setMessage({
+                isOpen: state ? !!state.message : false,
+                value: state ? state.message || "" : "",
+                type: state ? state.type || "" : ""
+            })
+        }
+    }, [message.isOpen, state]);
+
     return (
         <PageLayout>
             <FormWrapper>
@@ -105,7 +118,7 @@ const LoginPage = () => {
                 </span>
 
                     <span className="p-float-label">
-                    <Password value={password} onChange={(e) => setPassword(e.target.value)} toggleMask  feedback={false} />
+                    <Password id="password" value={password} onChange={(e) => setPassword(e.target.value)} toggleMask feedback={false} />
                     <label htmlFor="password">Password</label>
                 </span>
 

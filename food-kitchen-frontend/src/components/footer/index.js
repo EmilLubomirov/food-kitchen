@@ -7,7 +7,7 @@ const StyledFooter = styled.div`
     padding-top: 13px;
     text-align: center;
     color: white;
-    background-color: black;
+    background-color: dimgray;
 `;
 
 const Footer = () => {

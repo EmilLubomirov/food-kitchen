@@ -34,6 +34,8 @@ const ArticlePage = () => {
     const [description, setDescription] = useState('');
     const [articleImageUrl, setArticleImageUrl] = useState('');
     const [visible, setVisible] = useState(false);
+    const [isLoading, setLoading] = useState(true);
+
     const context = useContext(AuthContext);
 
     const toast = useRef(null);
@@ -108,51 +110,63 @@ const ArticlePage = () => {
     },[]);
 
     useEffect(() => {
+
+        if (articles.length > 0){
+            setLoading(false);
+        }
+    }, [articles]);
+
+    useEffect(() => {
         getArticles();
     }, []);
 
     return (
         <PageLayout>
             <h1>Articles</h1>
-            <Wrapper>
-                <DialogWindow visible={visible}
-                              header="Add Article"
-                              footer={renderFooter}
-                              draggable={false}
-                              onHide={onHide}
-                              style={{display: 'flex', flexFlow: 'column', alignItems: 'center'}}>
 
-                    <AddArticleForm title={title} setTitle={setTitle}
-                                    description={description} setDescription={setDescription}
-                                    setArticleImageUrl={setArticleImageUrl}/>
+            {
+                isLoading ? <div style={{height: "500px"}}/> :
 
-                    <Toast ref={formToast} position="bottom-right"/>
-                </DialogWindow>
+                    <Wrapper>
+                        <DialogWindow visible={visible}
+                                      header="Add Article"
+                                      footer={renderFooter}
+                                      draggable={false}
+                                      onHide={onHide}
+                                      style={{display: 'flex', flexFlow: 'column', alignItems: 'center'}}>
 
-                {
-                    articles.map(a => {
+                            <AddArticleForm title={title} setTitle={setTitle}
+                                            description={description} setDescription={setDescription}
+                                            setArticleImageUrl={setArticleImageUrl}/>
 
-                        const { id, title, description, imageUrl } = a;
+                            <Toast ref={formToast} position="bottom-right"/>
+                        </DialogWindow>
 
-                        return (
-                            <ArticlePreviewCard key={id}
-                                                id={id}
-                                                title={title}
-                                                description={description}
-                                                imageUrl={imageUrl}/>
-                        )
-                    })
-                }
-                {
+                        {
+                            articles.map(a => {
 
-                    context.user ?
-                        context.user.isAdmin ? (
-                            <StyledAddBtn label="Add Article" icon="pi pi-plus" onClick={handleSubmit}/>
-                        ) : null : null
-                }
+                                const { id, title, description, imageUrl } = a;
 
-                <Toast ref={toast} position="bottom-right"/>
-            </Wrapper>
+                                return (
+                                    <ArticlePreviewCard key={id}
+                                                        id={id}
+                                                        title={title}
+                                                        description={description}
+                                                        imageUrl={imageUrl}/>
+                                )
+                            })
+                        }
+                        {
+
+                            context.user ?
+                                context.user.isAdmin ? (
+                                    <StyledAddBtn label="Add Article" icon="pi pi-plus" onClick={handleSubmit}/>
+                                ) : null : null
+                        }
+
+                        <Toast ref={toast} position="bottom-right"/>
+                    </Wrapper>
+            }
 
         </PageLayout>
     )
