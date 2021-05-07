@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -90,11 +91,12 @@ public class RecipeController {
 
     @PostMapping("/filter")
     public ResponseEntity<CollectionModel<EntityModel<RecipeServiceModel>>> filterByCategory(
-            @RequestBody RecipeFilterModel recipe){
+           @Valid @RequestBody RecipeFilterModel recipe){
 
         List<EntityModel<RecipeServiceModel>> filtered = recipeService.findByCategories(recipe)
                 .stream()
                 .map(recipeModelAssembler::toModel)
+                .limit(recipe.getLimit())
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(CollectionModel.of(filtered,

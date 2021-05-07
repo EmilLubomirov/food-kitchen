@@ -1,4 +1,5 @@
 import React, {useCallback, useContext, useEffect, useRef, useState} from "react";
+import {useLocation} from "react-router-dom";
 import {Card} from "primereact/card";
 import styled from "styled-components";
 import {Rating} from "primereact/rating";
@@ -35,6 +36,15 @@ const RecipeDetailsCard = ({recipe}) => {
     const context = useContext(AuthContext);
 
     const toast = useRef(null);
+    const location = useLocation();
+
+    const { state } = location;
+
+    const [message, ] = useState({
+        isOpen: state ? !!state.message : false,
+        value: state ? state.message || "" : "",
+        type: state ? state.type || "" : ""
+    });
 
     const handleRatingChange = (e) => {
 
@@ -84,6 +94,13 @@ const RecipeDetailsCard = ({recipe}) => {
         }
     },[]);
 
+    useEffect(() => {
+
+        if (message.isOpen){
+            showMessage(message.type, message.value);
+        }
+    }, [message, showMessage]);
+
     const renderTitle = (
 
         context.user ?
@@ -98,7 +115,7 @@ const RecipeDetailsCard = ({recipe}) => {
                              {width: "fit-content"}}>
                         <StyledFavIcon className="pi pi-heart p-mr-4 p-text-secondary p-overlay-badge"/>
                     </div>
-                </div> : null
+                </div> : <span>{title}</span>
     );
 
     const header = (

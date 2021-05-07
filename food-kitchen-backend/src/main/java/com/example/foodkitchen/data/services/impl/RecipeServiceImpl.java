@@ -11,12 +11,12 @@ import com.example.foodkitchen.data.repositories.RecipeRepository;
 import com.example.foodkitchen.data.repositories.UserRepository;
 import com.example.foodkitchen.data.services.RecipeService;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -84,17 +84,18 @@ public class RecipeServiceImpl implements RecipeService {
         User user = userRepository.findByUsername(userUsername);
 
         savedRecipe.setUser(user);
-        recipeRepository.saveAndFlush(savedRecipe);
+        Recipe created = recipeRepository.saveAndFlush(savedRecipe);
 
         if (user.getRecipes() == null){
-            user.setRecipes(new HashSet<>(Set.of(savedRecipe)));
+            user.setRecipes(new HashSet<>(Set.of(created)));
         }
 
         else {
-            user.getRecipes().add(recipe);
+            user.getRecipes().add(created);
         }
 
-        return modelMapper.map(userRepository.saveAndFlush(user), RecipeServiceModel.class);
+        userRepository.saveAndFlush(user);
+        return modelMapper.map(created, RecipeServiceModel.class);
     }
 
     @Override

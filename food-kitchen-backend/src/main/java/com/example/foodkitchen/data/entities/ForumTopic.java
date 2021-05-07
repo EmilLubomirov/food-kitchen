@@ -10,6 +10,8 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.Set;
 
@@ -21,6 +23,8 @@ import java.util.Set;
 @AllArgsConstructor
 public class ForumTopic extends BaseEntity {
 
+    @NotBlank(message = "Title is mandatory")
+    @Column(name = "title")
     private String title;
 
     @OneToMany(mappedBy = "topic", fetch = FetchType.EAGER)
@@ -32,6 +36,7 @@ public class ForumTopic extends BaseEntity {
     @JsonBackReference
     private ForumCategory category;
 
+    @NotNull(message = "Date is mandatory")
     @CreationTimestamp
     private Date date;
 }

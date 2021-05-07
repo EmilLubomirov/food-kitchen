@@ -192,6 +192,7 @@ const BookPage = () =>{
             {
                 context.user ?
                     context.user.isAdmin ? (<Button label="Add book"
+                                                    icon="pi pi-plus"
                                                     onClick={handleSubmit}/>) : null
                     : null
             }

@@ -10,6 +10,7 @@ import {getCookie} from "../../utils/cookie";
 import {Password} from "primereact/password";
 import {beginUpload} from "../../utils/cloudinaryService";
 import { MESSAGE_TYPES, MESSAGES } from "../../utils/constants";
+import FormWrapper from "../../components/form-wrapper";
 
 const Wrapper = styled.div`
     height: 450px;
@@ -85,10 +86,11 @@ const ProfilePage = () => {
 
     return (
         <PageLayout>
-            <Wrapper>
-                <h1>Profile</h1>
+            <FormWrapper>
+                <Wrapper>
+                    <h1>Profile</h1>
 
-                <div>
+                    <div>
                     <span className="p-float-label">
                     <InputText id="username"
                                value={username}
@@ -101,9 +103,9 @@ const ProfilePage = () => {
                         label="Save"
                         disabled={isDisabled}/>
                 </span>
-                </div>
+                    </div>
 
-                <PasswordsWrapper>
+                    <PasswordsWrapper>
 
                     <span className="p-float-label">
                     <Password id="password" value={oldPassword}
@@ -114,38 +116,39 @@ const ProfilePage = () => {
 
                     </span>
 
-                    <span className="p-float-label">
+                        <span className="p-float-label">
                     <Password id="updatePassword" value={updatePassword}
                               onChange={(e) => setUpdatePassword(e.target.value)} toggleMask
                               disabled={isDisabled}/>
                               <label htmlFor="updatePassword">New Password</label>
                     </span>
 
-                    <span className="p-float-label">
+                        <span className="p-float-label">
                     <Password id="updateConfirmPassword" value={updateConfirmPassword}
                               onChange={(e) => setUpdateConfirmPassword(e.target.value)} toggleMask
                               disabled={isDisabled}/>
                               <label htmlFor="updateConfirmPassword">Confirm New Password</label>
                     </span>
 
-                         <Button label="Save"
-                                 onClick={handlePasswordSubmit}
-                                 disabled={isDisabled}/>
-                </PasswordsWrapper>
+                        <Button label="Save"
+                                onClick={handlePasswordSubmit}
+                                disabled={isDisabled}/>
+                    </PasswordsWrapper>
 
-                <div>
-                    <Button onClick={() => beginUpload(setUpdateAvatarImageUrl)}
-                            label="Change profile picture"
-                            disabled={isDisabled}/>
-                    <Button
-                        onClick={handleAvatarImageSubmit}
-                        label="Save"
-                        disabled={isDisabled}
-                        style={{marginLeft: '10px'}}/>
-                </div>
+                    <div>
+                        <Button onClick={() => beginUpload(setUpdateAvatarImageUrl)}
+                                label="Change profile picture"
+                                disabled={isDisabled}/>
+                        <Button
+                            onClick={handleAvatarImageSubmit}
+                            label="Save"
+                            disabled={isDisabled}
+                            style={{marginLeft: '10px'}}/>
+                    </div>
 
-                <Button onClick={handleSubmit} label={btnLabel}/>
-            </Wrapper>
+                    <Button onClick={handleSubmit} label={btnLabel}/>
+                </Wrapper>
+            </FormWrapper>
         </PageLayout>
     )
 };

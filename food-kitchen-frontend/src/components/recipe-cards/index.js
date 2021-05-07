@@ -14,7 +14,7 @@ const RecipeCards = ({recipes}) => {
         <Wrapper>
             {
                 recipes.map(r => {
-                    return <RecipeCard recipe={r} key={r.id}/>
+                    return <RecipeCard count={recipes.length} recipe={r} key={r.id}/>
                 })
             }
         </Wrapper>

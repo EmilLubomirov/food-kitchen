@@ -10,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 import java.util.Set;
 
@@ -21,9 +22,11 @@ import java.util.Set;
 @AllArgsConstructor
 public class User extends BaseEntity implements UserDetails {
 
-    @Column(name = "username")
+    @NotBlank(message = "Username is mandatory")
+    @Column(name = "username", unique = true)
     private String username;
 
+    @NotBlank(message = "Password is mandatory")
     @Column(name = "password")
     private String password;
 

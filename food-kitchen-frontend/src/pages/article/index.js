@@ -147,7 +147,7 @@ const ArticlePage = () => {
 
                     context.user ?
                         context.user.isAdmin ? (
-                            <StyledAddBtn label="Add Article" onClick={handleSubmit}/>
+                            <StyledAddBtn label="Add Article" icon="pi pi-plus" onClick={handleSubmit}/>
                         ) : null : null
                 }
 

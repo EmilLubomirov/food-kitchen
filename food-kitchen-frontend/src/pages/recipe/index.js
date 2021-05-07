@@ -7,6 +7,7 @@ import ScrollTopComponent from "../../components/scroll-top";
 import {Checkbox} from "primereact/checkbox";
 import styled from "styled-components";
 import {Toast} from "primereact/toast";
+import {Button} from "primereact/button";
 
 const FilterWrapper = styled.div`
     display: flex;
@@ -28,12 +29,23 @@ const CheckboxWrapper = styled.div`
     }
 `;
 
+const StyledLoadBtn = styled(Button)`
+    display: block;
+    margin: 30px auto;
+    width: 15%;
+`;
+
 const RecipePage = () => {
 
-    const [limit, setLimit] = useState(10);
+    const DEFAULT_RECIPE_LIMIT = 8;
+
+    const [limit, setLimit] = useState(
+        parseInt(sessionStorage.getItem("recipeLimit")) || DEFAULT_RECIPE_LIMIT);
+
     const [recipes, setRecipes] = useState([]);
     const [categories, setCategories] = useState([]);
-    const [chosenCategories, setChosenCategories] = useState([]);
+    const [chosenCategories, setChosenCategories] = useState(
+        JSON.parse(sessionStorage.getItem("chosenCategories")) || []);
 
     const toast = useRef(null);
 
@@ -48,53 +60,9 @@ const RecipePage = () => {
 
     const getRecipes = useCallback(() => {
 
-        axios.get(`http://localhost:8080/api/recipe`)
-            .then(res => {
-                if (res.status === 200) {
-                    setRecipes(res.data._embedded.recipeServiceModelList);
-                }
-            });
-    }, []);
-
-    const getFoodCategories = useCallback(() => {
-
-        axios.get('http://localhost:8080/api/recipe/category')
-            .then(res => {
-                if (res.status === 200) {
-                    setCategories(res.data._embedded.foodCategoryServiceModelList);
-                }
-            });
-    }, []);
-
-    const handleChange = (e) => {
-
-        const { value, checked } = e;
-
-        if (checked){
-            setChosenCategories((prevState) => {
-                return [...prevState, value];
-            })
-        }
-
-        else {
-            setChosenCategories(chosenCategories.filter(c => c !== value));
-        }
-    };
-
-    const showMessage = useCallback(() => {
-
-        if (toast.current){
-            toast.current.show({
-                severity: message.type,
-                summary: message.value,
-                })
-        }
-    },[message.type, message.value]);
-
-    useEffect(() => {
-
         axios.post(`http://localhost:8080/api/recipe/filter`, {
-            categories: chosenCategories
+            categories: chosenCategories,
+            limit,
         })
             .then(res => {
                 if (res.status === 200){
@@ -108,13 +76,80 @@ const RecipePage = () => {
                     }
                 }
             })
+    }, [limit, chosenCategories]);
 
-    }, [chosenCategories]);
+    const getFoodCategories = useCallback(() => {
+
+        axios.get('http://localhost:8080/api/recipe/category')
+            .then(res => {
+                if (res.status === 200) {
+                    setCategories(res.data._embedded.foodCategoryServiceModelList);
+                }
+            });
+    }, []);
+
+    const handleScrollPosition = () => {
+
+        const scrollPosition = sessionStorage.getItem("scrollPosition");
+
+        if (scrollPosition) {
+            window.scrollTo(0, parseInt(scrollPosition));
+            sessionStorage.removeItem("scrollPosition");
+        }
+    };
+
+    const handleChange = (e) => {
+
+        const { value, checked } = e;
+
+        let storageCategories = JSON.parse(sessionStorage.getItem("chosenCategories")) || [];
+
+        if (checked){
+
+            storageCategories.push(value);
+
+            setChosenCategories((prevState) => {
+                return [...prevState, value];
+            })
+        }
+
+        else {
+            storageCategories = storageCategories.filter(c => c !== value);
+            setChosenCategories(chosenCategories.filter(c => c !== value));
+        }
+
+        setLimit(DEFAULT_RECIPE_LIMIT);
+        sessionStorage.setItem("chosenCategories", JSON.stringify(storageCategories));
+    };
+
+    const handleClick = () => {
+        setLimit((prevLimit) => {
+            return prevLimit + DEFAULT_RECIPE_LIMIT;
+        })
+    };
+
+    const showMessage = useCallback(() => {
+
+        if (toast.current){
+            toast.current.show({
+                severity: message.type,
+                summary: message.value,
+                })
+        }
+    },[message.type, message.value]);
 
     useEffect(() => {
         getRecipes();
         getFoodCategories();
     }, [getRecipes, getFoodCategories]);
+
+    useEffect(() => {
+
+        if (recipes.length > 0){
+            handleScrollPosition();
+        }
+
+    }, [recipes]);
 
     useEffect(() => {
 
@@ -153,6 +188,7 @@ const RecipePage = () => {
             </FilterWrapper>
 
             <RecipeCards recipes={recipes}/>
+            <StyledLoadBtn label="Load more" onClick={handleClick}/>
             <ScrollTopComponent threshold={700}/>
 
             <Toast ref={toast} position="bottom-right"/>

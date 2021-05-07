@@ -6,11 +6,11 @@ export const StyledLink = styled(Link)`
     text-decoration: none;
 `;
 
-const LinkComponent = ({path, title, children}) =>{
+const LinkComponent = ({onClick, path, title, children}) =>{
 
     return (
         <div data-test-id={`link-${title}`}>
-            <StyledLink to={path}>
+            <StyledLink onClick={onClick} to={path}>
                 {children}
                 {title}
             </StyledLink>

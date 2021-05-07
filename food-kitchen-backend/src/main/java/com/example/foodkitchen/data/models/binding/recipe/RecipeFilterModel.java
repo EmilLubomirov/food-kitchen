@@ -15,4 +15,5 @@ import java.util.Set;
 public class RecipeFilterModel {
 
     private Set<FoodCategoryServiceModel> categories;
+    private int limit;
 }

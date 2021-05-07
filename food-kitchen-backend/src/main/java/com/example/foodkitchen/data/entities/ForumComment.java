@@ -9,6 +9,8 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
@@ -19,6 +21,8 @@ import java.util.Date;
 @AllArgsConstructor
 public class ForumComment extends BaseEntity {
 
+    @NotBlank(message = "Content is mandatory")
+    @Column(name = "content")
     private String content;
 
     @ManyToOne
@@ -31,6 +35,7 @@ public class ForumComment extends BaseEntity {
     @JsonBackReference
     private ForumTopic topic;
 
+    @NotNull(message = "Date is mandatory")
     @CreationTimestamp
     private Date date;
 

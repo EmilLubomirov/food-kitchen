@@ -58,7 +58,7 @@ const ForumPage = () => {
 
         const arr = topics.map(t => {return {label: <LinkComponent path={`/forum/${catName}/${t.id}`}
                                                                    title={t.title}/>}});
-        arr.push({label: <Button label='Add Topic' onClick={() => handleSubmit(catName)}/>});
+        arr.push({label: <Button label='Add Topic' icon="pi pi-plus" onClick={() => handleSubmit(catName)}/>});
 
         return arr;
     };

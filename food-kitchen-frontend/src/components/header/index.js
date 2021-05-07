@@ -34,6 +34,8 @@ const Header = () => {
 
         context.logout();
         document.cookie = "auth-token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        sessionStorage.removeItem("chosenCategories");
+        sessionStorage.removeItem("recipeLimit");
 
         history.push('/login', {
             message: MESSAGES.logoutSuccess,

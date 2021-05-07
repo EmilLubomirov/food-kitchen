@@ -14,7 +14,7 @@ const StyledImage = styled.img`
     height: 11em;
 `;
 
-const RecipeCard = ({recipe}) => {
+const RecipeCard = ({recipe, count}) => {
 
     const { title, imageUrl, id, rating }= recipe;
 
@@ -31,9 +31,14 @@ const RecipeCard = ({recipe}) => {
         </div>
     );
 
+    const handleClick = () => {
+        sessionStorage.setItem("scrollPosition", window.pageYOffset.toString());
+        sessionStorage.setItem("recipeLimit", count);
+    };
+
     return (
 
-        <LinkComponent path={`recipe/${id}`}>
+        <LinkComponent onClick={handleClick} path={`recipe/${id}`}>
             <StyledCard
                   title={title}
                   header={header}

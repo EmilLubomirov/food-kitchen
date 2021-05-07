@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Set;
 
 @Entity
@@ -17,6 +18,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class FoodCategory extends BaseEntity {
 
+    @NotBlank(message = "Name is mandatory")
     @Column(name = "name")
     private String name;
 

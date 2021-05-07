@@ -10,8 +10,10 @@ import {Password} from "primereact/password";
 import {authenticate} from "../../utils/auth";
 import  { MESSAGES, MESSAGE_TYPES } from "../../utils/constants";
 import {Toast} from "primereact/toast";
+import FormWrapper from "../../components/form-wrapper";
 
 const Wrapper = styled.div`
+    width: 300px;
     height: 350px;
     display: flex;
     flex-flow: column;
@@ -94,22 +96,24 @@ const LoginPage = () => {
 
     return (
         <PageLayout>
-            <Wrapper className="card">
-                <h1>Login</h1>
-                <span className="p-float-label">
+            <FormWrapper>
+                <Wrapper className="card">
+                    <h1>Login</h1>
+                    <span className="p-float-label">
                     <InputText id="username" value={username} onChange={(e) => setUsername(e.target.value)} />
                     <label htmlFor="username">Username</label>
                 </span>
 
-                <span className="p-float-label">
+                    <span className="p-float-label">
                     <Password value={password} onChange={(e) => setPassword(e.target.value)} toggleMask  feedback={false} />
                     <label htmlFor="password">Password</label>
                 </span>
 
-                <Button onClick={handleSubmit} label="Login"/>
+                    <Button onClick={handleSubmit} label="Login"/>
 
-                <Toast ref={toast} position="bottom-right"/>
-            </Wrapper>
+                    <Toast ref={toast} position="bottom-right"/>
+                </Wrapper>
+            </FormWrapper>
         </PageLayout>
     )
 };
