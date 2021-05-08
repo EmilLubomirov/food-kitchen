@@ -141,11 +141,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserServiceModel editUserPassword(String username, String updatePassword) {
+    public UserServiceModel editUserPassword(String username, String oldPassword, String updatePassword) {
 
         User user = userRepository.findByUsername(username);
 
         if (user == null){
+            return null;
+        }
+
+        boolean matches = passwordEncoder.matches(oldPassword, user.getPassword());
+
+        if (!matches){
             return null;
         }
 

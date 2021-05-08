@@ -196,7 +196,8 @@ public class UserServiceUnitTest {
         }});
 
         mockUserFindByUsername();
-        assertNull(userService.editUserPassword("INVALID_USERNAME", USER_UPDATE_PASSWORD));
+        assertNull(userService.editUserPassword(
+                "INVALID_USERNAME", "1234", USER_UPDATE_PASSWORD));
     }
 
     @Test
@@ -208,7 +209,8 @@ public class UserServiceUnitTest {
 
         mockUserFindByUsername();
         assertEquals(USER_UPDATE_PASSWORD,
-                userService.editUserPassword(USER_USERNAME, USER_UPDATE_PASSWORD).getPassword());
+                userService.editUserPassword(USER_USERNAME, "1234",
+                        USER_UPDATE_PASSWORD).getPassword());
     }
 
     @Test

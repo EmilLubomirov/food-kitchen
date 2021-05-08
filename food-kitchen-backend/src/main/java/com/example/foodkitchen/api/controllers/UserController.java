@@ -99,10 +99,15 @@ public class UserController {
     }
 
     @PatchMapping("/edit/password")
-    public ResponseEntity<EntityModel<UserServiceModel>> updatePassword(@RequestParam String updatePassword,
-                                    @AuthenticationPrincipal User principal) {
+    public ResponseEntity<EntityModel<UserServiceModel>> updatePassword(
+            @RequestParam String oldPassword,
+            @RequestParam String updatePassword,
+            @AuthenticationPrincipal User principal) {
 
-        UserServiceModel userServiceModel = userService.editUserPassword(principal.getUsername(), updatePassword);
+        UserServiceModel userServiceModel = userService.editUserPassword(
+                principal.getUsername(),
+                oldPassword, updatePassword);
+
         return ResponseEntity.ok(userModelAssembler.toModel(userServiceModel));
     }
 

@@ -129,7 +129,7 @@ const ForumPage = () => {
 
         <PageLayout>
             <Wrapper className="card">
-                <h1 style={{margin: "50px"}}>Choose category</h1>
+                <h1 style={{margin: "50px"}}>Forum Categories</h1>
                 <StyledPanelMenu model={getItems(categories)}/>
 
                 <DialogWindow visible={visibleTopicDialog}

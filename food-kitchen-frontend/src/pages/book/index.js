@@ -33,6 +33,10 @@ const Wrapper = styled.div`
     }
 `;
 
+const StyledTitle = styled.h1`
+    margin: 20px 20px 50px 10px;
+`;
+
 const StyledHeading = styled.h4`
     margin: 0 20px;
 `;
@@ -172,7 +176,7 @@ const BookPage = () =>{
 
             </DialogWindow>
 
-            <h1>Cook Books you should read</h1>
+            <StyledTitle>Cook Books you should read</StyledTitle>
             {
                 (isLoading ?
                     (<div style={{height: "500px"}}/>)
@@ -197,6 +201,7 @@ const BookPage = () =>{
                                 context.user ?
                                     context.user.isAdmin ? (<Button label="Add book"
                                                                     icon="pi pi-plus"
+                                                                    style={{marginTop: "20px"}}
                                                                     onClick={handleSubmit}/>) : null
                                     : null
                             }

@@ -15,7 +15,7 @@ import {Toast} from "primereact/toast";
 import FormWrapper from "../../components/form-wrapper";
 
 const Wrapper = styled.div`
-    height: 500px;
+    height: fit-content;
     display: flex;
     flex-flow: column;
     justify-content: space-between;
@@ -120,7 +120,8 @@ const AddRecipePage = () => {
                         <h4>Description</h4>
                         <InputTextarea value={description} onChange={(e) => setDescription(e.target.value)}
                                        rows={5} cols={50} autoResize />
-                        <Button onClick={() => beginUpload(setImageUrl)} icon="pi pi-plus" label="Add photo"/>
+
+                        <Button style={{margin: "15px 0"}} onClick={() => beginUpload(setImageUrl)} icon="pi pi-plus" label="Add photo"/>
                         <StyledBtn onClick={handleSubmit} label="Save"/>
 
                         <Toast ref={toast} position="bottom-right"/>

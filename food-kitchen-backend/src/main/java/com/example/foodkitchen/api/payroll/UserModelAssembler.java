@@ -26,7 +26,7 @@ public class UserModelAssembler implements RepresentationModelAssembler<UserServ
                 linkTo(methodOn(UserController.class).verifyLogin("authToken")).withRel("verifyLogin"),
                 linkTo(methodOn(UserController.class).updateUsername("newUsername", principal))
                         .withRel("updateUsername"),
-                linkTo(methodOn(UserController.class).updatePassword("newPassword", principal))
+                linkTo(methodOn(UserController.class).updatePassword("oldPassword","newPassword", principal))
                         .withRel("updatePassword"),
                 linkTo(methodOn(UserController.class).updateProfilePicture("imgUrl", principal))
                         .withRel("updateProfilePicture")

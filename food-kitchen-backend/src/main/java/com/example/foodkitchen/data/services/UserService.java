@@ -19,7 +19,7 @@ public interface UserService extends UserDetailsService {
 
     UserServiceModel editUserUsername(String oldUsername, String updateUsername);
 
-    UserServiceModel editUserPassword(String username, String updatePassword);
+    UserServiceModel editUserPassword(String username, String oldPassword, String updatePassword);
 
     UserServiceModel editUserProfilePicture(String username, String updateAvatarImageUrl);
 }

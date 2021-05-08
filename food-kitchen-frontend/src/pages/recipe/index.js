@@ -183,7 +183,7 @@ const RecipePage = () => {
 
     return (
         <PageLayout>
-            <h1>Recipe page</h1>
+            <h1>Recipes</h1>
 
             <FilterWrapper>
                 {

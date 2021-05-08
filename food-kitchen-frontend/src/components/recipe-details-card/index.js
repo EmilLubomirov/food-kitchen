@@ -35,6 +35,8 @@ const RecipeDetailsCard = ({recipe}) => {
     const { id, title, imageUrl, description, publisher, voters, fans } = recipe;
     const context = useContext(AuthContext);
 
+    const isUserPublisher = context.user ? context.user.username === publisher : false;
+
     const toast = useRef(null);
     const location = useLocation();
 
@@ -154,7 +156,9 @@ const RecipeDetailsCard = ({recipe}) => {
                   header={header}
                   footer={footer}>
                 <p className="p-m-0" style={{lineHeight: '1.5'}}>{description}</p>
-                <p className="p-m-0" style={{lineHeight: '1.5'}}>Published by: {publisher}</p>
+                <p className="p-m-0" style={{lineHeight: '1.5', fontWeight: "600"}}>
+                    Published by: {isUserPublisher ? "You" : publisher}
+                </p>
             </Card>
 
             <Toast ref={toast} position="bottom-right"/>

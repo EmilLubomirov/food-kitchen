@@ -3,7 +3,6 @@ import {useParams} from "react-router-dom";
 import PageLayout from "../../components/page-layout";
 import axios from "axios";
 import {InputTextarea} from "primereact/inputtextarea";
-import AvatarComponent from "../../components/avatar";
 import {Button} from "primereact/button";
 import styled from "styled-components";
 import AuthContext from "../../AuthContext";
@@ -18,6 +17,10 @@ const Wrapper = styled.div`
     @media screen and (max-width: 600px) {
        display: block;
     }
+`;
+
+const Heading = styled.h1`
+    margin: 30px auto 50px auto;
 `;
 
 const StyledComment = styled.div`
@@ -91,7 +94,7 @@ const ForumTopicPage = () => {
     return (
         <PageLayout>
             <Wrapper>
-                <h1>{topicTitle}</h1>
+                <Heading>{topicTitle}</Heading>
 
                 {
                    isLoading ? <div style={{height: "500px"}}/> :

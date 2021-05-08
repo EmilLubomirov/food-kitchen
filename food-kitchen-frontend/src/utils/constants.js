@@ -7,7 +7,7 @@ const MESSAGES = {
     logoutSuccess: "Logout success",
     addedToFav: "Added to favorites",
     profileChangesSuccess: "Changes saved successfully",
-    emptyFields: "Some fields are empty",
+    emptyFields: "Empty fields are not allowed",
     invalidFieldData: "Incorrect field data",
     addedBook: "Book added successfully",
     addedArticle: "Article added successfully",
