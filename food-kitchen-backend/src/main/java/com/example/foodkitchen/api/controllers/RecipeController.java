@@ -8,7 +8,6 @@ import com.example.foodkitchen.data.models.service.FoodCategoryServiceModel;
 import com.example.foodkitchen.data.models.service.RecipeServiceModel;
 import com.example.foodkitchen.data.services.FoodCategoryService;
 import com.example.foodkitchen.data.services.RecipeService;
-import org.modelmapper.ModelMapper;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
@@ -39,6 +38,8 @@ public class RecipeController {
 
     @GetMapping
     public ResponseEntity<CollectionModel<EntityModel<RecipeServiceModel>>> findAll(){
+
+        System.out.println("here");
 
         List<EntityModel<RecipeServiceModel>> recipes = recipeService.findAll()
                 .stream()

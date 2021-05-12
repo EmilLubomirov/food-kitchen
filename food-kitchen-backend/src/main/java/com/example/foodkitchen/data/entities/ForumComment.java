@@ -10,7 +10,6 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
@@ -27,7 +26,6 @@ public class ForumComment extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-//    @JsonBackReference
     private User initiator;
 
     @ManyToOne
@@ -35,7 +33,6 @@ public class ForumComment extends BaseEntity {
     @JsonBackReference
     private ForumTopic topic;
 
-    @NotNull(message = "Date is mandatory")
     @CreationTimestamp
     private Date date;
 

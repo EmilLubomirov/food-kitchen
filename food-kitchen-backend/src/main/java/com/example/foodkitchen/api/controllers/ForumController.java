@@ -81,10 +81,10 @@ public class ForumController {
     }
 
     @PostMapping("/addTopic")
-    @ResponseStatus(code = HttpStatus.CREATED)
     public ResponseEntity<EntityModel<ForumTopicServiceModel>> addTopic(@RequestBody ForumTopicCreateModel topicCreateModel,
                                            @AuthenticationPrincipal User principal){
-        return ResponseEntity.ok(forumTopicModelAssembler.toModel(forumTopicService.add(topicCreateModel, principal)));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(forumTopicModelAssembler.toModel(forumTopicService.add(topicCreateModel, principal)));
     }
 
     @PostMapping("/{topicId}/addComment")
@@ -93,6 +93,8 @@ public class ForumController {
                                                @AuthenticationPrincipal User principal){
 
         forumCommentService.add(model.getContent(), topicId, principal);
-        return ResponseEntity.ok(forumTopicModelAssembler.toModel(forumTopicService.findById(topicId)));
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(forumTopicModelAssembler.toModel(forumTopicService.findById(topicId)));
     }
 }

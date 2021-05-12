@@ -12,7 +12,15 @@ export const authenticate = (url, body, headers, onSuccess, onFailure) =>{
         }
 
         const authToken = response.data.token;
-        document.cookie = `${process.env.REACT_APP_AUTH_COOKIE_NAME}=${authToken}`;
+
+            const now = new Date();
+            const time = now.getTime();
+
+            //expire after a week
+            const expireTime = time + (7*24*60*60*1000);
+            now.setTime(expireTime);
+
+            document.cookie = `${process.env.REACT_APP_AUTH_COOKIE_NAME}=${authToken};expires=${now.toUTCString()};path=/`;
 
         onSuccess(response);
 

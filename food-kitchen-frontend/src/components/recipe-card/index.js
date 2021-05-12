@@ -16,7 +16,7 @@ const StyledImage = styled.img`
 
 const RecipeCard = ({recipe, count}) => {
 
-    const { title, imageUrl, id, rating }= recipe;
+    const { title, imageUrl, id, rating } = recipe;
 
     const header = (
         <StyledImage src={imageUrl}

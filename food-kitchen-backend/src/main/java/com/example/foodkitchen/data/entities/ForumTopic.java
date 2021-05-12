@@ -11,7 +11,6 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.Set;
 
@@ -36,7 +35,6 @@ public class ForumTopic extends BaseEntity {
     @JsonBackReference
     private ForumCategory category;
 
-    @NotNull(message = "Date is mandatory")
     @CreationTimestamp
     private Date date;
 }

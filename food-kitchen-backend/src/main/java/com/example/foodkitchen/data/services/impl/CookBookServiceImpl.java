@@ -5,12 +5,16 @@ import com.example.foodkitchen.data.models.service.CookBookServiceModel;
 import com.example.foodkitchen.data.repositories.CookBookRepository;
 import com.example.foodkitchen.data.services.CookBookService;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@CacheConfig(cacheNames = {"cook-books"})
 public class CookBookServiceImpl implements CookBookService {
 
     private final CookBookRepository cookBookRepository;
@@ -22,6 +26,7 @@ public class CookBookServiceImpl implements CookBookService {
     }
 
     @Override
+    @Cacheable
     public List<CookBookServiceModel> findAll() {
         return cookBookRepository.findAll()
                 .stream()
@@ -30,6 +35,7 @@ public class CookBookServiceImpl implements CookBookService {
     }
 
     @Override
+    @CacheEvict(allEntries = true)
     public CookBookServiceModel add(CookBookServiceModel cookBook) {
 
         CookBook book = modelMapper.map(cookBook, CookBook.class);

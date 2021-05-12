@@ -11,6 +11,9 @@ import com.example.foodkitchen.data.repositories.RecipeRepository;
 import com.example.foodkitchen.data.repositories.UserRepository;
 import com.example.foodkitchen.data.services.RecipeService;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -44,6 +47,7 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
+    @Cacheable(cacheNames = {"recipes"})
     public List<RecipeServiceModel> findByCategories(RecipeFilterModel recipe) {
 
         if (recipe.getCategories().size() == 0){
@@ -71,6 +75,7 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
+    @CacheEvict(cacheNames = {"recipes"}, allEntries = true)
     public RecipeServiceModel add(Recipe recipe, String userUsername) {
 
         Set<FoodCategory> categories = recipe.getCategories()
@@ -99,6 +104,7 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
+    @Cacheable(cacheNames = {"recipe-id"})
     public RecipeServiceModel findById(String id) {
 
         Recipe recipe = recipeRepository.findById(id).orElse(null);
@@ -113,6 +119,10 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
+    @Caching(evict = {
+            @CacheEvict(cacheNames = {"recipes"}, allEntries = true),
+            @CacheEvict(cacheNames = "recipe-id", key = "#recipe.getId()")
+    })
     public RecipeServiceModel updateRating(RecipeServiceModel recipe, User user) {
 
         Recipe recipeById = recipeRepository.findById(recipe.getId()).orElse(null);
@@ -151,6 +161,10 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
+    @Caching(evict = {
+            @CacheEvict(cacheNames = {"user-favorites"}, allEntries = true),
+            @CacheEvict(cacheNames = "recipe-id", key = "#recipe.getId()")
+    })
     public RecipeServiceModel addToFavorites(RecipeServiceModel recipe, User user) {
 
         Recipe recipeById = recipeRepository.findById(recipe.getId()).orElse(null);
@@ -185,6 +199,7 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
+    @Cacheable(cacheNames = {"user-favorites"})
     public List<RecipeServiceModel> findFavoriteRecipes(String username) {
 
         User user = userRepository.findByUsername(username);
@@ -201,6 +216,10 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
+    @Caching(evict = {
+            @CacheEvict(cacheNames = {"user-favorites"}, allEntries = true),
+            @CacheEvict(cacheNames = "recipe-id", key = "#recipeId")
+    })
     public RecipeServiceModel deleteFromFavorites(String recipeId, String username) {
 
         User user = userRepository.findByUsername(username);

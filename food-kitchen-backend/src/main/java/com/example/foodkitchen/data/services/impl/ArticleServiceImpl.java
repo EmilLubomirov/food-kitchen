@@ -5,13 +5,16 @@ import com.example.foodkitchen.data.models.service.ArticleServiceModel;
 import com.example.foodkitchen.data.repositories.ArticleRepository;
 import com.example.foodkitchen.data.services.ArticleService;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@CacheConfig(cacheNames = {"articles"})
 public class ArticleServiceImpl implements ArticleService {
 
     private final ArticleRepository articleRepository;
@@ -23,6 +26,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    @Cacheable
     public List<ArticleServiceModel> findAll() {
         return articleRepository.findAll()
                 .stream()
@@ -31,6 +35,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    @CacheEvict(allEntries = true)
     public ArticleServiceModel add(ArticleServiceModel article) {
 
         Article createArticle = new Article(article.getTitle(),
@@ -42,6 +47,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    @Cacheable
     public ArticleServiceModel findById(String id) {
 
         Article found = articleRepository.findById(id).orElse(null);

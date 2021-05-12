@@ -5,12 +5,15 @@ import com.example.foodkitchen.data.models.service.FoodCategoryServiceModel;
 import com.example.foodkitchen.data.repositories.FoodCategoryRepository;
 import com.example.foodkitchen.data.services.FoodCategoryService;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@CacheConfig(cacheNames = {"food-categories"})
 public class FoodCategoryServiceImpl implements FoodCategoryService {
 
     private final FoodCategoryRepository foodCategoryRepository;
@@ -22,6 +25,7 @@ public class FoodCategoryServiceImpl implements FoodCategoryService {
     }
 
     @Override
+    @Cacheable
     public List<FoodCategoryServiceModel> findAll() {
         return foodCategoryRepository.findAll()
                 .stream()

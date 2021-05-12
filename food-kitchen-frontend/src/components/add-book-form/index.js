@@ -50,8 +50,8 @@ const AddBookForm = ({title, setTitle,
                 </div>
             </StyledForm>
 
-            <Button onClick={() => beginUpload(setBookImageUrl)}
-                    label="Add book image" style={{margin: "0 35%"}}/>
+            <Button icon="pi pi-plus" onClick={() => beginUpload(setBookImageUrl)}
+                    label="Add book image" style={{margin: "0 34%"}}/>
         </CloudinaryContext>
     )
 };

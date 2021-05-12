@@ -34,8 +34,8 @@ const AddArticleForm = ({title, setTitle,
                 </div>
             </StyledForm>
 
-            <Button onClick={() => beginUpload(setArticleImageUrl)}
-                    label="Add article image" style={{margin: "0 35%"}}/>
+            <Button icon="pi pi-plus" onClick={() => beginUpload(setArticleImageUrl)}
+                    label="Add article image" style={{margin: "0 34%"}}/>
         </CloudinaryContext>
     )
 };

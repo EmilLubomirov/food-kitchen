@@ -1,4 +1,4 @@
-import React, {useContext} from "react"
+import React, {useContext, useEffect, useState} from "react"
 import {useHistory} from "react-router-dom";
 import getNavigation from "../../utils/navigation";
 import LinkComponent, {StyledLink} from "../../components/link";
@@ -6,6 +6,7 @@ import AuthContext from "../../AuthContext";
 import styled from 'styled-components';
 import AvatarComponent from "../avatar";
 import {MESSAGE_TYPES, MESSAGES} from "../../utils/constants";
+import {getCookie} from "../../utils/cookie";
 
 const Wrapper = styled.div`
     height: 70px;
@@ -26,6 +27,8 @@ const Wrapper = styled.div`
 
 const Header = () => {
 
+    const [isLoading, setLoading] = useState(true);
+
     const context = useContext(AuthContext);
     const navigation = getNavigation(context.user);
     const history = useHistory();
@@ -44,17 +47,34 @@ const Header = () => {
         });
     };
 
+    useEffect(() => {
+
+        if (context.user ||
+            context.user === null ||
+            !getCookie("auth-token")){
+
+            setLoading(false);
+        }
+
+    },[context.user]);
+
     return (
         <Wrapper>
-            {  navigation.map((link, index) => {
-                return <LinkComponent key={index}
-                                      path={link.path}
-                                      title={link.title}/>
 
-            })
+            {
+                isLoading ? null :
+
+                    navigation.map((link, index) => {
+                        return <LinkComponent key={index}
+                                              path={link.path}
+                                              title={link.title}/>
+                    })
             }
 
-            {context.user ? (
+            {
+                isLoading ? null :
+
+                context.user ? (
                 <>
                     <AvatarComponent image={
                         context.user.avatarImageUrl ? context.user.avatarImageUrl :
