@@ -37,7 +37,7 @@ const StyledLoadBtn = styled(Button)`
 
 const RecipePage = () => {
 
-    const DEFAULT_RECIPE_LIMIT = 8;
+    const DEFAULT_RECIPE_LIMIT = 9;
 
     const [limit, setLimit] = useState(
         parseInt(sessionStorage.getItem("recipeLimit")) || DEFAULT_RECIPE_LIMIT);
