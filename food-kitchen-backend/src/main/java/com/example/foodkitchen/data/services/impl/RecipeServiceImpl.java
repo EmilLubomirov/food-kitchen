@@ -121,6 +121,7 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     @Caching(evict = {
             @CacheEvict(cacheNames = {"recipes"}, allEntries = true),
+            @CacheEvict(cacheNames = {"user-favorites"}, allEntries = true),
             @CacheEvict(cacheNames = "recipe-id", key = "#recipe.getId()")
     })
     public RecipeServiceModel updateRating(RecipeServiceModel recipe, User user) {

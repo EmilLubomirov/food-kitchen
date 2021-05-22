@@ -37,15 +37,19 @@ const StyledLoadBtn = styled(Button)`
 
 const RecipePage = () => {
 
-    const DEFAULT_RECIPE_LIMIT = 9;
+    const DEFAULT_RECIPE_LIMIT = 8;
+
+    const RECIPE_LIMIT_KEY = "recipeLimit";
+    const SCROLL_POSITION_KEY = "scrollPosition";
+    const CHOSEN_CATEGORIES_KEY = "chosenCategories";
 
     const [limit, setLimit] = useState(
-        parseInt(sessionStorage.getItem("recipeLimit")) || DEFAULT_RECIPE_LIMIT);
+        parseInt(sessionStorage.getItem(RECIPE_LIMIT_KEY)) || DEFAULT_RECIPE_LIMIT);
 
     const [recipes, setRecipes] = useState([]);
     const [categories, setCategories] = useState([]);
     const [chosenCategories, setChosenCategories] = useState(
-        JSON.parse(sessionStorage.getItem("chosenCategories")) || []);
+        JSON.parse(sessionStorage.getItem(CHOSEN_CATEGORIES_KEY)) || []);
 
     const [isLoading, setLoading] = useState(true);
 
@@ -93,11 +97,11 @@ const RecipePage = () => {
 
     const handleScrollPosition = () => {
 
-        const scrollPosition = sessionStorage.getItem("scrollPosition");
+        const scrollPosition = sessionStorage.getItem(SCROLL_POSITION_KEY);
 
         if (scrollPosition) {
             window.scrollTo(0, parseInt(scrollPosition));
-            sessionStorage.removeItem("scrollPosition");
+            sessionStorage.removeItem(SCROLL_POSITION_KEY);
         }
     };
 
@@ -105,7 +109,7 @@ const RecipePage = () => {
 
         const { value, checked } = e;
 
-        let storageCategories = JSON.parse(sessionStorage.getItem("chosenCategories")) || [];
+        let storageCategories = JSON.parse(sessionStorage.getItem(CHOSEN_CATEGORIES_KEY)) || [];
 
         if (checked){
 
@@ -122,7 +126,7 @@ const RecipePage = () => {
         }
 
         setLimit(DEFAULT_RECIPE_LIMIT);
-        sessionStorage.setItem("chosenCategories", JSON.stringify(storageCategories));
+        sessionStorage.setItem(CHOSEN_CATEGORIES_KEY, JSON.stringify(storageCategories));
     };
 
     const handleClick = () => {
@@ -180,6 +184,10 @@ const RecipePage = () => {
         }
 
     }, [message, showMessage, updateLocationState]);
+
+    useEffect(() => {
+        sessionStorage.setItem(RECIPE_LIMIT_KEY, limit.toString());
+    }, [limit]);
 
     return (
         <PageLayout>

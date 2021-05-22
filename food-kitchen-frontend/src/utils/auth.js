@@ -36,7 +36,13 @@ export const getLoggedInUser = async () =>{
                         'Authorization': authToken
     };
 
-    const promise = await axios.post(url, {}, { headers });
 
-    return promise.data;
+    try {
+        const promise = await axios.post(url, {}, { headers });
+        return promise.data;
+    }
+
+    catch (e) {
+        return null;
+    }
 };

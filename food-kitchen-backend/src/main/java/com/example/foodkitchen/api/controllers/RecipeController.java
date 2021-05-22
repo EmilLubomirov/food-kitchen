@@ -39,8 +39,6 @@ public class RecipeController {
     @GetMapping
     public ResponseEntity<CollectionModel<EntityModel<RecipeServiceModel>>> findAll(){
 
-        System.out.println("here");
-
         List<EntityModel<RecipeServiceModel>> recipes = recipeService.findAll()
                 .stream()
                 .map(recipeModelAssembler::toModel)

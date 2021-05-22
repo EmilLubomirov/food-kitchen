@@ -1,4 +1,4 @@
-import React, {useCallback, useContext, useRef, useState} from "react";
+import React, {useCallback, useContext, useEffect, useRef, useState} from "react";
 import {useHistory} from "react-router-dom";
 import PageLayout from "../../components/page-layout";
 import {InputText} from "primereact/inputtext";
@@ -46,6 +46,11 @@ const ProfilePage = () => {
     const toast = useRef(null);
 
     const [username, setUsername] = useState(context.user.username);
+
+    const [currentAvatarImageUrl, setCurrentAvatarImageUrl] = useState(
+        context.user.avatarImageUrl ||
+        "https://icon-library.com/images/default-user-icon/default-user-icon-13.jpg");
+
     const [oldPassword, setOldPassword] = useState('');
     const [updatePassword, setUpdatePassword] = useState('');
     const [updateConfirmPassword, setUpdateConfirmPassword] = useState('');
@@ -154,6 +159,14 @@ const ProfilePage = () => {
         }
     },[]);
 
+    useEffect(() => {
+
+        if (updateAvatarImageUrl){
+            setCurrentAvatarImageUrl(updateAvatarImageUrl);
+        }
+
+    }, [updateAvatarImageUrl]);
+
     return (
         <PageLayout>
             <FormWrapper>
@@ -207,8 +220,7 @@ const ProfilePage = () => {
 
                     <ProfilePictureWrapper>
 
-                        <StyledImage src={context.user.avatarImageUrl ||
-                        "https://icon-library.com/images/default-user-icon/default-user-icon-13.jpg"}
+                        <StyledImage src={currentAvatarImageUrl}
                              alt="Profile"/>
 
                              <div>
@@ -225,7 +237,9 @@ const ProfilePage = () => {
 
                     </ProfilePictureWrapper>
 
-                    <Button style={{width: "12%", height: "40px"}} onClick={handleSubmit} label={btnLabel}/>
+                    <Button style={{width: "12%", height: "40px"}}
+                            onClick={handleSubmit}
+                            label={btnLabel}/>
 
                     <Toast ref={toast} position="bottom-right"/>
                 </Wrapper>

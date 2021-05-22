@@ -51,6 +51,7 @@ const Header = () => {
 
         if (context.user ||
             context.user === null ||
+            context.user === false ||
             !getCookie("auth-token")){
 
             setLoading(false);

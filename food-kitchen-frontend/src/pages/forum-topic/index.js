@@ -71,7 +71,7 @@ const ForumTopicPage = () => {
         axios.post(url, body, { headers })
             .then(res => {
 
-                if (res.status === 200) {
+                if (res.status === 201) {
                     getTopicComments();
                     setPersonalComment('');
                 }
